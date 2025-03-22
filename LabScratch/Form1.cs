@@ -1,4 +1,5 @@
 using System.Drawing.Drawing2D;
+using System.Numerics;
 
 namespace LabScratch
 {
@@ -151,21 +152,21 @@ namespace LabScratch
         {
             int lineWidth = 2;
             Graph graph = graphs[(int)numericUpDown1.Value];
-            Pen edgePen = new Pen(Color.Black, lineWidth);
             foreach (Node node in graph.Nodes.Values)
             {
                 Point from = node.Position;
                 if (node.NextId != -1)
                 {
                     Point to = graph.Nodes[node.NextId].Position;
-                    e.Graphics.DrawLine(edgePen, from, to);
+                    drawLineAndArrow(lineWidth, e.Graphics, from, to);
                 }
                 if (node.FalseId != -1)
                 {
                     Point to = graph.Nodes[node.FalseId].Position;
-                    e.Graphics.DrawLine(edgePen, from, to);
+                    drawLineAndArrow(lineWidth, e.Graphics, from, to);
                 }
             }
+
             StringFormat format = new StringFormat();
             format.LineAlignment = StringAlignment.Center;
             format.Alignment = StringAlignment.Center;
@@ -180,6 +181,24 @@ namespace LabScratch
                 e.Graphics.DrawEllipse(pen, rect);
                 e.Graphics.DrawString(node.Id.ToString(), new Font("Arial", 10), brush, rect, format);
             }
+        }
+
+        private void drawLineAndArrow(int lineWidth, Graphics g, Point from, Point to)
+        {
+            Pen connectPen = new Pen(Color.Black, lineWidth);
+            connectPen.CustomEndCap = new AdjustableArrowCap(lineWidth * 3, lineWidth * 3);
+            int shortenBy = 10;
+            float dx = to.X - from.X;
+            float dy = to.Y - from.Y;
+            double length = Math.Sqrt(dx * dx + dy * dy);
+            if (length > shortenBy)
+            {
+                float factor = (float)(length - shortenBy) / (float)length;
+                Point shortenedTo = new Point((int)(from.X + dx * factor), (int)(from.Y + dy * factor));
+                g.DrawLine(connectPen, from, shortenedTo);
+            }
+            else
+                g.DrawLine(connectPen, from, to);
         }
 
         private void button2_Click(object sender, EventArgs e)
