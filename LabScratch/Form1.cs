@@ -1,4 +1,4 @@
-using System.Windows.Forms;
+using System.Drawing.Drawing2D;
 
 namespace LabScratch
 {
@@ -78,6 +78,37 @@ namespace LabScratch
                     prevPos = e.Location;
                 }
             }
+            else if (e.Button == MouseButtons.Right)
+            {
+                if (nodeId.HasValue)
+                {
+                    if (graph.SelectedNodeId > -1 && graph.SelectedNodeId != nodeId.Value)
+                    {
+                        Node selectedNode = graph.Nodes[graph.SelectedNodeId];
+                        if (selectedNode.Type != NodeType.Condition)
+                        {
+                            if (selectedNode.NextId == nodeId.Value)
+                                selectedNode.NextId = -1;
+                            else
+                                selectedNode.NextId = nodeId.Value;
+                        }
+                        else
+                        {
+                            if (selectedNode.NextId == -1 && selectedNode.FalseId != nodeId.Value)
+                                selectedNode.NextId = nodeId.Value;
+                            else if (selectedNode.FalseId == -1 && selectedNode.NextId != nodeId.Value)
+                                selectedNode.FalseId = nodeId.Value;
+                            else
+                            {
+                                selectedNode.NextId = nodeId.Value;
+                                selectedNode.FalseId = -1;
+                            }
+                        }
+                        showSelectedNodeInfo();
+                        pictureBox1.Invalidate();
+                    }
+                }
+            }
         }
 
         private void showSelectedNodeInfo()
@@ -121,53 +152,34 @@ namespace LabScratch
             int lineWidth = 2;
             Graph graph = graphs[(int)numericUpDown1.Value];
             Pen edgePen = new Pen(Color.Black, lineWidth);
-            foreach (var node in graph.Nodes.Values)
+            foreach (Node node in graph.Nodes.Values)
             {
                 Point from = node.Position;
                 if (node.NextId != -1)
                 {
                     Point to = graph.Nodes[node.NextId].Position;
                     e.Graphics.DrawLine(edgePen, from, to);
-                    DrawArrow(e.Graphics, from, to);
                 }
                 if (node.FalseId != -1)
                 {
                     Point to = graph.Nodes[node.FalseId].Position;
                     e.Graphics.DrawLine(edgePen, from, to);
-                    DrawArrow(e.Graphics, from, to);
                 }
             }
             StringFormat format = new StringFormat();
             format.LineAlignment = StringAlignment.Center;
             format.Alignment = StringAlignment.Center;
-            foreach (int key in graph.Nodes.Keys)
+            foreach (Node node in graph.Nodes.Values)
             {
-                Node n = graph.Nodes[key];
                 Pen pen = new Pen(Color.Black, lineWidth);
-                if (key == graph.SelectedNodeId)
+                if (node.Id == graph.SelectedNodeId)
                     pen.DashPattern = new float[] { 1.5f, 1.5f };
                 SolidBrush brush = new SolidBrush(Color.Black);
-                Rectangle rect = new Rectangle((int)(n.Position.X - n.Rad), (int)(n.Position.Y - n.Rad), n.Rad * 2, n.Rad * 2);
+                Rectangle rect = new Rectangle((int)(node.Position.X - node.Rad), (int)(node.Position.Y - node.Rad), node.Rad * 2, node.Rad * 2);
                 e.Graphics.FillEllipse(Brushes.White, rect);
                 e.Graphics.DrawEllipse(pen, rect);
-                e.Graphics.DrawString((key).ToString(), new Font("Arial", 10), brush, rect, format);
+                e.Graphics.DrawString(node.Id.ToString(), new Font("Arial", 10), brush, rect, format);
             }
-        }
-
-        private void DrawArrow(Graphics g, Point from, Point to)
-        {
-            const float arrowAngle = 45;
-            const float arrowLength = 10;
-
-            float angle = (float)Math.Atan2(to.Y - from.Y, to.X - from.X);
-
-            PointF arrowPoint1 = new PointF(to.X - arrowLength * (float)Math.Cos(angle - arrowAngle),
-                                            to.Y - arrowLength * (float)Math.Sin(angle - arrowAngle));
-            PointF arrowPoint2 = new PointF(to.X - arrowLength * (float)Math.Cos(angle + arrowAngle),
-                                            to.Y - arrowLength * (float)Math.Sin(angle + arrowAngle));
-
-            g.DrawLine(new Pen(Color.Black), to, arrowPoint1);
-            g.DrawLine(new Pen(Color.Black), to, arrowPoint2);
         }
 
         private void button2_Click(object sender, EventArgs e)
