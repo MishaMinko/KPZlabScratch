@@ -111,9 +111,9 @@
 
             if (nodeType == NodeType.Assignment)
             {
-                str = comboBox3.SelectedText + "=";
+                str = comboBox3.SelectedItem + "=";
                 if (comboBox2.SelectedIndex == 0)
-                    str += comboBox4.SelectedText;
+                    str += comboBox4.SelectedItem;
                 else
                     str += numericUpDown1.Value.ToString();
             }
@@ -123,11 +123,11 @@
                     str = "INPUT ";
                 else
                     str = "PRINT ";
-                str += comboBox4.SelectedText;
+                str += comboBox4.SelectedItem;
             }
             else
             {
-                str = comboBox3.SelectedText;
+                str = comboBox3.SelectedItem.ToString();
                 if (comboBox2.SelectedIndex == 0)
                     str += "==";
                 else

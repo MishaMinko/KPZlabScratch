@@ -35,11 +35,23 @@
             flowLayoutPanel1 = new FlowLayoutPanel();
             listBox1 = new ListBox();
             button2 = new Button();
+            panel1 = new Panel();
+            textBox5 = new TextBox();
+            label5 = new Label();
+            textBox4 = new TextBox();
+            label4 = new Label();
+            textBox3 = new TextBox();
+            label3 = new Label();
+            textBox2 = new TextBox();
+            label2 = new Label();
+            textBox1 = new TextBox();
+            label1 = new Label();
             pictureBox1 = new PictureBox();
             contextMenuStrip1 = new ContextMenuStrip(components);
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             tableLayoutPanel1.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
+            panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -83,6 +95,7 @@
             flowLayoutPanel1.Controls.Add(button1);
             flowLayoutPanel1.Controls.Add(listBox1);
             flowLayoutPanel1.Controls.Add(button2);
+            flowLayoutPanel1.Controls.Add(panel1);
             flowLayoutPanel1.Dock = DockStyle.Fill;
             flowLayoutPanel1.Location = new Point(839, 3);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
@@ -110,6 +123,109 @@
             button2.UseVisualStyleBackColor = true;
             button2.Click += button2_Click;
             // 
+            // panel1
+            // 
+            panel1.Controls.Add(textBox5);
+            panel1.Controls.Add(label5);
+            panel1.Controls.Add(textBox4);
+            panel1.Controls.Add(label4);
+            panel1.Controls.Add(textBox3);
+            panel1.Controls.Add(label3);
+            panel1.Controls.Add(textBox2);
+            panel1.Controls.Add(label2);
+            panel1.Controls.Add(textBox1);
+            panel1.Controls.Add(label1);
+            panel1.Location = new Point(3, 125);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(328, 186);
+            panel1.TabIndex = 4;
+            panel1.Visible = false;
+            // 
+            // textBox5
+            // 
+            textBox5.Location = new Point(101, 151);
+            textBox5.Name = "textBox5";
+            textBox5.ReadOnly = true;
+            textBox5.Size = new Size(224, 31);
+            textBox5.TabIndex = 9;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(3, 154);
+            label5.Name = "label5";
+            label5.Size = new Size(71, 25);
+            label5.TabIndex = 8;
+            label5.Text = "False Id";
+            // 
+            // textBox4
+            // 
+            textBox4.Location = new Point(101, 114);
+            textBox4.Name = "textBox4";
+            textBox4.ReadOnly = true;
+            textBox4.Size = new Size(224, 31);
+            textBox4.TabIndex = 7;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(3, 117);
+            label4.Name = "label4";
+            label4.Size = new Size(69, 25);
+            label4.TabIndex = 6;
+            label4.Text = "Next Id";
+            // 
+            // textBox3
+            // 
+            textBox3.Location = new Point(101, 77);
+            textBox3.Name = "textBox3";
+            textBox3.ReadOnly = true;
+            textBox3.Size = new Size(224, 31);
+            textBox3.TabIndex = 5;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(3, 80);
+            label3.Name = "label3";
+            label3.Size = new Size(92, 25);
+            label3.TabIndex = 4;
+            label3.Text = "Operation";
+            // 
+            // textBox2
+            // 
+            textBox2.Location = new Point(101, 40);
+            textBox2.Name = "textBox2";
+            textBox2.ReadOnly = true;
+            textBox2.Size = new Size(224, 31);
+            textBox2.TabIndex = 3;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(3, 43);
+            label2.Name = "label2";
+            label2.Size = new Size(49, 25);
+            label2.TabIndex = 2;
+            label2.Text = "Type";
+            // 
+            // textBox1
+            // 
+            textBox1.Location = new Point(101, 3);
+            textBox1.Name = "textBox1";
+            textBox1.ReadOnly = true;
+            textBox1.Size = new Size(224, 31);
+            textBox1.TabIndex = 1;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(3, 6);
+            label1.Name = "label1";
+            label1.Size = new Size(28, 25);
+            label1.TabIndex = 0;
+            label1.Text = "Id";
+            // 
             // pictureBox1
             // 
             pictureBox1.BackColor = SystemColors.Window;
@@ -127,7 +243,7 @@
             contextMenuStrip1.ImageScalingSize = new Size(20, 20);
             contextMenuStrip1.Name = "contextMenuStrip1";
             contextMenuStrip1.ShowImageMargin = false;
-            contextMenuStrip1.Size = new Size(186, 32);
+            contextMenuStrip1.Size = new Size(36, 4);
             contextMenuStrip1.Click += contextMenuStrip1_Click;
             // 
             // Form1
@@ -143,6 +259,8 @@
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
             tableLayoutPanel1.ResumeLayout(false);
             flowLayoutPanel1.ResumeLayout(false);
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
         }
@@ -157,5 +275,16 @@
         private ListBox listBox1;
         private Button button2;
         private ContextMenuStrip contextMenuStrip1;
+        private Panel panel1;
+        private TextBox textBox1;
+        private Label label1;
+        private TextBox textBox2;
+        private Label label2;
+        private TextBox textBox5;
+        private Label label5;
+        private TextBox textBox4;
+        private Label label4;
+        private TextBox textBox3;
+        private Label label3;
     }
 }

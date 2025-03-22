@@ -27,7 +27,7 @@
 
         public bool Collides(Node n)
         {
-            return DistanceSquare(n.Position) <= Math.Pow(Rad * 2, 2);
+            return DistanceSquare(n.Position) <= Math.Pow(Rad * 3, 2);
         }
     }
 }

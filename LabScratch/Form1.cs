@@ -17,26 +17,90 @@ namespace LabScratch
 
         private void button1_Click(object sender, EventArgs e)
         {
-            pictureBox1.Invalidate();
+            if (graphs[(int)numericUpDown1.Value].SelectedNodeId > -1)
+                showSelectedNodeInfo();
+            else
+                hideSelectedNodeInfo();
+                pictureBox1.Invalidate();
         }
 
         private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
         {
             Graph graph = graphs[(int)numericUpDown1.Value];
+            int? nodeId = graph.CheckNodeOnPos(e.Location);
             if (e.Button == MouseButtons.Left)
             {
-                if (variables.Count > 1)
+                if (nodeId.HasValue)
                 {
-                    CreateNodeForm form2 = new CreateNodeForm(variables);
-                    if (form2.ShowDialog() == DialogResult.OK)
+                    if (graph.SelectedNodeId != nodeId.Value)
                     {
-                        graph.AddNode(new Node(graph.GetAvailableId(), form2.nodeType, form2.res, e.Location));
-                        pictureBox1.Invalidate();
+                        graph.SelectedNodeId = nodeId.Value;
+                        showSelectedNodeInfo();
                     }
+                    else
+                    {
+                        graph.SelectedNodeId = -1;
+                        hideSelectedNodeInfo();
+                    }
+                    pictureBox1.Invalidate();
                 }
                 else
-                    MessageBox.Show("Create at least 2 variables!", "Node creating error");
+                {
+                    if (variables.Count > 1)
+                    {
+                        if (graph.checkCollision(e.Location))
+                        {
+                            CreateNodeForm form2 = new CreateNodeForm(variables);
+                            if (form2.ShowDialog() == DialogResult.OK)
+                            {
+                                bool p = graph.AddNode(new Node(graph.GetAvailableId(), form2.nodeType, form2.res, e.Location));
+                                if (p)
+                                    pictureBox1.Invalidate();
+                                else
+                                    MessageBox.Show("You reached the limit of 100 nodes", "Node creating error");
+                            }
+                        }
+                    }
+                    else
+                        MessageBox.Show("Create at least 2 variables!", "Node creating error");
+                }
             }
+        }
+
+        private void showSelectedNodeInfo()
+        {
+            panel1.Visible = true;
+            Node node = graphs[(int)numericUpDown1.Value].Nodes[graphs[(int)numericUpDown1.Value].SelectedNodeId];
+            textBox1.Text = node.Id.ToString();
+            textBox2.Text = node.Type.ToString();
+            textBox3.Text = node.Operation;
+            if(node.NextId > -1)
+            {
+                label4.Visible = true;
+                textBox4.Visible = true;
+                textBox4.Text = node.NextId.ToString();
+            }
+            else
+            {
+                label4.Visible = false;
+                textBox4.Visible = false;
+            }
+            if (node.FalseId > -1)
+            {
+                label5.Visible = true;
+                textBox5.Visible = true;
+                textBox5.Text = node.FalseId.ToString();
+            }
+            else
+            {
+                label5.Visible = false;
+                textBox5.Visible = false;
+            }
+        }
+
+        private void hideSelectedNodeInfo()
+        {
+            panel1.Visible = false;
         }
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
@@ -63,17 +127,17 @@ namespace LabScratch
             StringFormat format = new StringFormat();
             format.LineAlignment = StringAlignment.Center;
             format.Alignment = StringAlignment.Center;
-            for (int i = 0; i < graph.Nodes.Count; i++)
+            foreach (int key in graph.Nodes.Keys)
             {
-                Node n = graph.Nodes[i];
+                Node n = graph.Nodes[key];
                 Pen pen = new Pen(Color.Black, lineWidth);
-                //if (i == graph.Selected)
-                //    pen.DashPattern = new float[] { 1.5f, 1.5f };
+                if (key == graph.SelectedNodeId)
+                    pen.DashPattern = new float[] { 1.5f, 1.5f };
                 SolidBrush brush = new SolidBrush(Color.Black);
                 Rectangle rect = new Rectangle((int)(n.Position.X - n.Rad), (int)(n.Position.Y - n.Rad), n.Rad * 2, n.Rad * 2);
                 e.Graphics.FillEllipse(Brushes.White, rect);
                 e.Graphics.DrawEllipse(pen, rect);
-                e.Graphics.DrawString((i + 1).ToString(), new Font("Arial", 10), brush, rect, format);
+                e.Graphics.DrawString((key).ToString(), new Font("Arial", 10), brush, rect, format);
             }
         }
 

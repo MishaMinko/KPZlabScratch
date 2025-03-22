@@ -1,25 +1,34 @@
-﻿namespace LabScratch
+﻿using System.Xml.Linq;
+
+namespace LabScratch
 {
     public class Graph
     {
         private const int Max = 100;
         public Dictionary<int, Node> Nodes { get; private set; }
         public Dictionary<string, int> Variables { get; private set; }
+        public int SelectedNodeId { get; set; }
 
         public Graph()
         {
+            SelectedNodeId = -1;
             Nodes = new Dictionary<int, Node>();
             Variables = new Dictionary<string, int>();
         }
 
-        public bool AddNode(Node node)
+        public bool checkCollision(Point pos)
         {
-            if (Nodes.Count >= Max)
-                return false;
-
+            Node node = new Node(-1, 0, "", pos);
             foreach (Node n in Nodes.Values)
                 if (n.Collides(node))
                     return false;
+            return true;
+        }
+
+        public bool AddNode(Node node)
+        {
+            if (Nodes.Count >= Max - 1)
+                return false;
 
             Nodes.Add(node.Id, node);
             return true;
@@ -66,6 +75,26 @@
         public int GetVariable(string name)
         {
             return Variables.ContainsKey(name) ? Variables[name] : 0;
+        }
+
+        public int? CheckNodeOnPos(Point pos)
+        {
+            int? nodeId = null;
+            int minDist = int.MaxValue;
+            foreach (int key in Nodes.Keys)
+            {
+                Node n = Nodes[key];
+                int dist = n.DistanceSquare(pos);
+                if (dist <= Math.Pow(n.Rad, 2))
+                {
+                    if (dist < minDist)
+                    {
+                        nodeId = key;
+                        minDist = dist;
+                    }
+                }
+            }
+            return nodeId;
         }
     }
 }
