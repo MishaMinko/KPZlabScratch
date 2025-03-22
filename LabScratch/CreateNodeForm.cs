@@ -1,22 +1,28 @@
-﻿using System.Windows.Forms;
-
-namespace LabScratch
+﻿namespace LabScratch
 {
     public partial class CreateNodeForm : Form
     {
         Dictionary<string, int> variables;
+        public NodeType nodeType;
+        public string res;
         public CreateNodeForm(Dictionary<string, int> variables)
         {
             InitializeComponent();
+            nodeType = 0;
+            res = "";
             numericUpDown1.Minimum = int.MinValue;
             numericUpDown1.Maximum = int.MaxValue;
             this.variables = variables;
             foreach (var variable in variables)
             {
-                string str = variable.Key + " = " + variable.Value;
-                listBox1.Items.Add(str);
-                comboBox3.Items.Add(str);
-                comboBox4.Items.Add(str);
+                listBox1.Items.Add(variable.Key + " = " + variable.Value);
+                comboBox3.Items.Add(variable.Key);
+                comboBox4.Items.Add(variable.Key);
+            }
+            if (comboBox3.Items.Count > 0)
+            {
+                comboBox3.SelectedIndex = 0;
+                comboBox4.SelectedIndex = 0;
             }
             contextMenuStrip1.Items.Add("Check all variables");
             listBox1.ContextMenuStrip = contextMenuStrip1;
@@ -44,11 +50,20 @@ namespace LabScratch
             if (comboBox2.Items.Count > 0)
                 comboBox2.Items.Clear();
             if (comboBox1.SelectedIndex == 0)
+            {
+                nodeType = NodeType.Assignment;
                 comboBox2.Items.AddRange(new string[] { "V1=V2", "V=C" });
+            }
             else if (comboBox1.SelectedIndex == 1)
+            {
+                nodeType = NodeType.Console;
                 comboBox2.Items.AddRange(new string[] { "INPUT V", "PRINT V" });
+            }
             else
+            {
+                nodeType = NodeType.Condition;
                 comboBox2.Items.AddRange(new string[] { "V==C", "V<C" });
+            }
             comboBox2.SelectedIndex = 0;
         }
 
@@ -92,7 +107,38 @@ namespace LabScratch
 
         private void button1_Click(object sender, EventArgs e)
         {
+            string str = "";
 
+            if (nodeType == NodeType.Assignment)
+            {
+                str = comboBox3.SelectedText + "=";
+                if (comboBox2.SelectedIndex == 0)
+                    str += comboBox4.SelectedText;
+                else
+                    str += numericUpDown1.Value.ToString();
+            }
+            else if (nodeType == NodeType.Console)
+            {
+                if (comboBox2.SelectedIndex == 0)
+                    str = "INPUT ";
+                else
+                    str = "PRINT ";
+                str += comboBox4.SelectedText;
+            }
+            else
+            {
+                str = comboBox3.SelectedText;
+                if (comboBox2.SelectedIndex == 0)
+                    str += "==";
+                else
+                    str += "<";
+                str += numericUpDown1.Value.ToString();
+            }
+
+            res = str;
+
+            this.DialogResult = DialogResult.OK;
+            this.Close();
         }
     }
 }

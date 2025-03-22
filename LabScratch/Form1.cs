@@ -25,18 +25,17 @@ namespace LabScratch
             Graph graph = graphs[(int)numericUpDown1.Value];
             if (e.Button == MouseButtons.Left)
             {
-                CreateNodeForm form2 = new CreateNodeForm(variables);
-                if (form2.ShowDialog() == DialogResult.OK)
+                if (variables.Count > 1)
                 {
-                    //string res = form2.res;
-                    //if (!res.Equals(""))
-                    //{
-                    //    string[] str = res.Split('=');
-                    //    variables.Add(str[0], Convert.ToInt32(str[1]));
-                    //    updateVariablesList();
-                    //}
+                    CreateNodeForm form2 = new CreateNodeForm(variables);
+                    if (form2.ShowDialog() == DialogResult.OK)
+                    {
+                        graph.AddNode(new Node(graph.GetAvailableId(), form2.nodeType, form2.res, e.Location));
+                        pictureBox1.Invalidate();
+                    }
                 }
-                //graph.AddNode(new Node(graph.GetAvailableId(), , , e.Location));
+                else
+                    MessageBox.Show("Create at least 2 variables!", "Node creating error");
             }
         }
 
