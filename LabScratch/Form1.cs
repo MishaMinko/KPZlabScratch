@@ -1,12 +1,17 @@
+using System.Windows.Forms;
+
 namespace LabScratch
 {
     public partial class Form1 : Form
     {
         Graph[] graphs;
         Dictionary<string, int> variables;
+        bool isMoved;
+        Point prevPos;
         public Form1()
         {
             InitializeComponent();
+            isMoved = false;
             variables = new Dictionary<string, int>();
             graphs = new Graph[100];
             for (int i = 0; i < graphs.Length; i++)
@@ -21,10 +26,10 @@ namespace LabScratch
                 showSelectedNodeInfo();
             else
                 hideSelectedNodeInfo();
-                pictureBox1.Invalidate();
+            pictureBox1.Invalidate();
         }
 
-        private void pictureBox1_MouseClick(object sender, MouseEventArgs e)
+        private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
             Graph graph = graphs[(int)numericUpDown1.Value];
             int? nodeId = graph.CheckNodeOnPos(e.Location);
@@ -65,6 +70,14 @@ namespace LabScratch
                         MessageBox.Show("Create at least 2 variables!", "Node creating error");
                 }
             }
+            else if (e.Button == MouseButtons.Middle)
+            {
+                if (graph.SelectedNodeId > -1)
+                {
+                    isMoved = true;
+                    prevPos = e.Location;
+                }
+            }
         }
 
         private void showSelectedNodeInfo()
@@ -74,7 +87,7 @@ namespace LabScratch
             textBox1.Text = node.Id.ToString();
             textBox2.Text = node.Type.ToString();
             textBox3.Text = node.Operation;
-            if(node.NextId > -1)
+            if (node.NextId > -1)
             {
                 label4.Visible = true;
                 textBox4.Visible = true;
@@ -197,6 +210,54 @@ namespace LabScratch
             viewForm.StartPosition = FormStartPosition.CenterScreen;
             viewForm.Font = new Font(viewForm.Font.FontFamily, 12);
             viewForm.ShowDialog();
+        }
+
+        private void CorrectMove()
+        {
+            Node n = graphs[(int)numericUpDown1.Value].Nodes[graphs[(int)numericUpDown1.Value].SelectedNodeId];
+            Point newPos = n.Position;
+            if (newPos.X < 0)
+                newPos.X = 0;
+            else if (newPos.X > pictureBox1.Size.Width)
+                newPos.X = pictureBox1.Size.Width;
+            if (newPos.Y < 0)
+                newPos.Y = 0;
+            else if (newPos.Y > pictureBox1.Size.Height)
+                newPos.Y = pictureBox1.Size.Height;
+            n.Position = newPos;
+            pictureBox1.Invalidate();
+        }
+
+        private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Middle)
+            {
+                if (isMoved)
+                {
+                    isMoved = false;
+                    if (graphs[(int)numericUpDown1.Value].SelectedNodeId > -1)
+                        CorrectMove();
+                }
+            }
+        }
+
+        private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (isMoved)
+            {
+                if (graphs[(int)numericUpDown1.Value].SelectedNodeId > -1)
+                {
+                    Point vector = new Point(e.Location.X - prevPos.X, e.Location.Y - prevPos.Y);
+                    prevPos = e.Location;
+                    Node n = graphs[(int)numericUpDown1.Value].Nodes[graphs[(int)numericUpDown1.Value].SelectedNodeId];
+                    vector.X += n.Position.X;
+                    vector.Y += n.Position.Y;
+                    n.Position = vector;
+                    pictureBox1.Invalidate();
+                }
+                else
+                    isMoved = false;
+            }
         }
     }
 }
