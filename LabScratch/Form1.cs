@@ -1,5 +1,4 @@
 using System.Drawing.Drawing2D;
-using System.Numerics;
 
 namespace LabScratch
 {
@@ -86,23 +85,53 @@ namespace LabScratch
                     if (graph.SelectedNodeId > -1 && graph.SelectedNodeId != nodeId.Value)
                     {
                         Node selectedNode = graph.Nodes[graph.SelectedNodeId];
+                        Node chosenNode = graph.Nodes[nodeId.Value];
                         if (selectedNode.Type != NodeType.Condition)
                         {
-                            if (selectedNode.NextId == nodeId.Value)
+                            if (selectedNode.NextId == chosenNode.Id)
                                 selectedNode.NextId = -1;
+                            else if (chosenNode.NextId == selectedNode.Id)
+                                chosenNode.NextId = -1;
+                            else if (chosenNode.Type == NodeType.Condition && chosenNode.FalseId == selectedNode.Id)
+                                chosenNode.FalseId = -1;
                             else
-                                selectedNode.NextId = nodeId.Value;
+                                selectedNode.NextId = chosenNode.Id;
                         }
                         else
                         {
-                            if (selectedNode.NextId == -1 && selectedNode.FalseId != nodeId.Value)
-                                selectedNode.NextId = nodeId.Value;
-                            else if (selectedNode.FalseId == -1 && selectedNode.NextId != nodeId.Value)
-                                selectedNode.FalseId = nodeId.Value;
+                            if (selectedNode.NextId == chosenNode.Id)
+                                selectedNode.NextId = -1;
+                            else if (selectedNode.FalseId == chosenNode.Id)
+                                selectedNode.FalseId = -1;
+                            else if (selectedNode.NextId == -1)
+                            {
+                                if (chosenNode.NextId == selectedNode.Id)
+                                    chosenNode.NextId = -1;
+                                else if (chosenNode.Type == NodeType.Condition && chosenNode.FalseId == selectedNode.Id)
+                                    chosenNode.FalseId = -1;
+                                else
+                                    selectedNode.NextId = chosenNode.Id;
+                            }
+                            else if (selectedNode.FalseId == -1 && selectedNode.NextId != chosenNode.Id)
+                            {
+                                if (chosenNode.NextId == selectedNode.Id)
+                                    chosenNode.NextId = -1;
+                                else if (chosenNode.Type == NodeType.Condition && chosenNode.FalseId == selectedNode.Id)
+                                    chosenNode.FalseId = -1;
+                                else
+                                    selectedNode.FalseId = chosenNode.Id;
+                            }
                             else
                             {
-                                selectedNode.NextId = nodeId.Value;
-                                selectedNode.FalseId = -1;
+                                if (chosenNode.NextId == selectedNode.Id)
+                                    chosenNode.NextId = -1;
+                                else if (chosenNode.Type == NodeType.Condition && chosenNode.FalseId == selectedNode.Id)
+                                    chosenNode.FalseId = -1;
+                                else
+                                {
+                                    selectedNode.NextId = chosenNode.Id;
+                                    selectedNode.FalseId = -1;
+                                }
                             }
                         }
                         showSelectedNodeInfo();
@@ -187,7 +216,7 @@ namespace LabScratch
         {
             Pen connectPen = new Pen(Color.Black, lineWidth);
             connectPen.CustomEndCap = new AdjustableArrowCap(lineWidth * 3, lineWidth * 3);
-            int shortenBy = 10;
+            int shortenBy = 13;
             float dx = to.X - from.X;
             float dy = to.Y - from.Y;
             double length = Math.Sqrt(dx * dx + dy * dy);

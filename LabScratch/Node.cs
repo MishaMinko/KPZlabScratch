@@ -4,7 +4,7 @@
 
     public class Node
     {
-        public int Rad = 12;
+        public int Rad = 14;
         public int Id { get; set; }
         public NodeType Type { get; set; }
         public string Operation { get; set; }
