@@ -1,6 +1,4 @@
-﻿using System.Xml.Linq;
-
-namespace LabScratch
+﻿namespace LabScratch
 {
     public class Graph
     {
@@ -70,11 +68,6 @@ namespace LabScratch
                 Variables[name] = value;
                 return true;
             }
-        }
-
-        public int GetVariable(string name)
-        {
-            return Variables.ContainsKey(name) ? Variables[name] : 0;
         }
 
         public int? CheckNodeOnPos(Point pos)
