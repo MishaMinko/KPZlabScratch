@@ -48,6 +48,7 @@
             label1 = new Label();
             pictureBox1 = new PictureBox();
             contextMenuStrip1 = new ContextMenuStrip(components);
+            button3 = new Button();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             tableLayoutPanel1.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
@@ -130,6 +131,7 @@
             panel1.Controls.Add(textBox4);
             panel1.Controls.Add(label4);
             panel1.Controls.Add(textBox3);
+            panel1.Controls.Add(button3);
             panel1.Controls.Add(label3);
             panel1.Controls.Add(textBox2);
             panel1.Controls.Add(label2);
@@ -137,7 +139,7 @@
             panel1.Controls.Add(label1);
             panel1.Location = new Point(3, 125);
             panel1.Name = "panel1";
-            panel1.Size = new Size(328, 186);
+            panel1.Size = new Size(328, 236);
             panel1.TabIndex = 4;
             panel1.Visible = false;
             // 
@@ -248,6 +250,16 @@
             contextMenuStrip1.Size = new Size(36, 4);
             contextMenuStrip1.Click += contextMenuStrip1_Click;
             // 
+            // button3
+            // 
+            button3.Location = new Point(3, 188);
+            button3.Name = "button3";
+            button3.Size = new Size(322, 45);
+            button3.TabIndex = 5;
+            button3.Text = "Delete chosen node";
+            button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
@@ -288,5 +300,6 @@
         private Label label4;
         private TextBox textBox3;
         private Label label3;
+        private Button button3;
     }
 }

@@ -319,5 +319,15 @@ namespace LabScratch
                     isMoved = false;
             }
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Graph graph = graphs[(int)numericUpDown1.Value];
+            if (graph.SelectedNodeId != -1)
+            {
+                graph.RemoveNode(graph.SelectedNodeId);
+                pictureBox1.Invalidate();
+            }
+        }
     }
 }

@@ -41,7 +41,7 @@ namespace LabScratch
             {
                 if (node.NextId == id)
                     node.NextId = -1;
-                if (node.FalseId == id)
+                else if (node.Type == NodeType.Condition && node.FalseId == id)
                     node.FalseId = -1;
             }
         }
