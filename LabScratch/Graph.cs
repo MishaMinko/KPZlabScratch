@@ -1,5 +1,4 @@
 ﻿using System.Text.Json.Serialization;
-using System.Xml.Linq;
 
 namespace LabScratch
 {
@@ -39,72 +38,24 @@ namespace LabScratch
             if (Nodes.Count >= Max)
                 return -1;
 
-            if (node.Type == NodeType.Assignment)
+            List<string> vs = GetVariablesNames(node);
+            if (vs.Count == 0)
+                return 0;
+            else if (vs.Count == 1)
             {
-                string[] str = node.Operation.Split('=');
-                string v1 = str[0];
-                string v2 = str[1];
-                if (!Char.IsDigit(v2[0]))
-                {
-                    if (!Variables.Contains(v1) && !Variables.Contains(v2) && !v1.Equals(v2))
-                    {
-                        if (Variables.Count + 1 >= Max)
-                            return -2;
-                        else
-                        {
-                            Variables.Add(v1);
-                            Variables.Add(v2);
-                        }
-                    }
-                    else
-                    {
-                        if (Variables.Count >= Max)
-                            return -2;
-                        else if (!Variables.Contains(v1))
-                            Variables.Add(v1);
-                        else
-                            Variables.Add(v2);
-                    }
-                }
+                if (Variables.Count >= Max)
+                    return -2;
                 else
-                {
-                    if (!Variables.Contains(v1))
-                    {
-                        if (Variables.Count >= Max)
-                            return -2;
-                        else
-                            Variables.Add(v1);
-                    }
-                }
-            }
-            else if (node.Type == NodeType.Console)
-            {
-                string[] str = node.Operation.Split(' ');
-                string v = str[1];
-                if (!Variables.Contains(v))
-                {
-                    if (Variables.Count >= Max)
-                        return -2;
-                    else
-                        Variables.Add(v);
-                }
+                    Variables.Add(vs[0]);
             }
             else
             {
-                string[] str = null;
-                if (node.Operation.Contains('<'))
-                    str = node.Operation.Split('<');
+                if (Variables.Count + 1 >= Max)
+                    return -2;
                 else
-                    str = node.Operation.Split("==");
-                if (str == null)
-                    return 0;
-                string v = str[0];
-                if (!Variables.Contains(v))
                 {
-                    if (Variables.Count >= Max)
-                        return -2;
-                    else
-                        Variables.Add(v);
+                    Variables.Add(vs[0]);
+                    Variables.Add(vs[1]);
                 }
             }
 
@@ -114,7 +65,13 @@ namespace LabScratch
 
         public void RemoveNode(int id)
         {
+            CheckConnectedVariables(Nodes[id]);
             Nodes.Remove(id);
+            CheckConnectedNodes(id);
+        }
+
+        private void CheckConnectedNodes(int id)
+        {
             foreach (Node node in Nodes.Values)
             {
                 if (node.NextId == id)
@@ -150,6 +107,48 @@ namespace LabScratch
                 }
             }
             return nodeId;
+        }
+
+        private void CheckConnectedVariables(Node node)
+        {
+
+        }
+
+        private List<string> GetVariablesNames(Node node)
+        {
+            List<string> names = new List<string>();
+
+            if (node.Type == NodeType.Assignment)
+            {
+                string[] str = node.Operation.Split('=');
+                string v1 = str[0];
+                string v2 = str[1];
+                if (!Char.IsDigit(v2[0]))
+                {
+                    names.Add(v1);
+                    names.Add(v2);
+                }
+                else
+                    names.Add(v1);
+            }
+            else if (node.Type == NodeType.Console)
+            {
+                string[] str = node.Operation.Split(' ');
+                names.Add(str[1]);
+            }
+            else
+            {
+                string[] str = null;
+                if (node.Operation.Contains('<'))
+                    str = node.Operation.Split('<');
+                else
+                    str = node.Operation.Split("==");
+                if (str == null)
+                    return null;
+                names.Add(str[0]);
+            }
+
+            return names;
         }
     }
 }

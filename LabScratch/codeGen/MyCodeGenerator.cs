@@ -8,8 +8,11 @@ namespace LabScratch.codeGen
         {
             StringBuilder sb = new StringBuilder();
 
+            sb.AppendLine("class MyProgram");
+            sb.AppendLine("{");
             sb.AppendLine(generateVariables(variables));
             sb.AppendLine("static object locker = new object();");
+            string b = sb.ToString();
 
             List<Graph> nonEmptyGraphs = new List<Graph>();
             foreach (Graph graph in graphs)
@@ -18,6 +21,8 @@ namespace LabScratch.codeGen
 
             if (nonEmptyGraphs.Count < 1)
                 return false;
+
+            sb.AppendLine("}");
 
             return false;
         }
