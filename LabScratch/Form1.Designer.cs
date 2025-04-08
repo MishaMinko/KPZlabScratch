@@ -47,20 +47,20 @@
             label2 = new Label();
             textBox1 = new TextBox();
             label1 = new Label();
+            panel2 = new Panel();
+            button4 = new Button();
+            panel3 = new Panel();
+            button6 = new Button();
+            button5 = new Button();
             pictureBox1 = new PictureBox();
             contextMenuStrip1 = new ContextMenuStrip(components);
-            panel2 = new Panel();
-            panel3 = new Panel();
-            button4 = new Button();
-            button5 = new Button();
-            button6 = new Button();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             tableLayoutPanel1.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
             panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panel2.SuspendLayout();
             panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // button1
@@ -150,7 +150,6 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(328, 236);
             panel1.TabIndex = 4;
-            panel1.Visible = false;
             // 
             // textBox5
             // 
@@ -247,6 +246,53 @@
             label1.TabIndex = 0;
             label1.Text = "Id";
             // 
+            // panel2
+            // 
+            panel2.Controls.Add(button4);
+            panel2.Location = new Point(3, 367);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(328, 266);
+            panel2.TabIndex = 5;
+            // 
+            // button4
+            // 
+            button4.Location = new Point(3, 110);
+            button4.Name = "button4";
+            button4.Size = new Size(322, 45);
+            button4.TabIndex = 10;
+            button4.Text = "Generate code";
+            button4.UseVisualStyleBackColor = true;
+            button4.Click += button4_Click;
+            // 
+            // panel3
+            // 
+            panel3.Controls.Add(button6);
+            panel3.Controls.Add(button5);
+            panel3.Location = new Point(3, 639);
+            panel3.Name = "panel3";
+            panel3.Size = new Size(328, 104);
+            panel3.TabIndex = 6;
+            // 
+            // button6
+            // 
+            button6.Location = new Point(3, 54);
+            button6.Name = "button6";
+            button6.Size = new Size(322, 45);
+            button6.TabIndex = 12;
+            button6.Text = "Export graphs and variables";
+            button6.UseVisualStyleBackColor = true;
+            button6.Click += button6_Click;
+            // 
+            // button5
+            // 
+            button5.Location = new Point(3, 3);
+            button5.Name = "button5";
+            button5.Size = new Size(322, 45);
+            button5.TabIndex = 11;
+            button5.Text = "Import graphs and variables";
+            button5.UseVisualStyleBackColor = true;
+            button5.Click += button5_Click;
+            // 
             // pictureBox1
             // 
             pictureBox1.BackColor = SystemColors.Window;
@@ -269,53 +315,6 @@
             contextMenuStrip1.Size = new Size(36, 4);
             contextMenuStrip1.Click += contextMenuStrip1_Click;
             // 
-            // panel2
-            // 
-            panel2.Controls.Add(button4);
-            panel2.Location = new Point(3, 367);
-            panel2.Name = "panel2";
-            panel2.Size = new Size(328, 266);
-            panel2.TabIndex = 5;
-            // 
-            // panel3
-            // 
-            panel3.Controls.Add(button6);
-            panel3.Controls.Add(button5);
-            panel3.Location = new Point(3, 639);
-            panel3.Name = "panel3";
-            panel3.Size = new Size(328, 104);
-            panel3.TabIndex = 6;
-            // 
-            // button4
-            // 
-            button4.Location = new Point(3, 110);
-            button4.Name = "button4";
-            button4.Size = new Size(322, 45);
-            button4.TabIndex = 10;
-            button4.Text = "Generate code";
-            button4.UseVisualStyleBackColor = true;
-            button4.Click += button4_Click;
-            // 
-            // button5
-            // 
-            button5.Location = new Point(3, 3);
-            button5.Name = "button5";
-            button5.Size = new Size(322, 45);
-            button5.TabIndex = 11;
-            button5.Text = "Import graphs";
-            button5.UseVisualStyleBackColor = true;
-            button5.Click += button5_Click;
-            // 
-            // button6
-            // 
-            button6.Location = new Point(3, 54);
-            button6.Name = "button6";
-            button6.Size = new Size(322, 45);
-            button6.TabIndex = 12;
-            button6.Text = "Export graphs";
-            button6.UseVisualStyleBackColor = true;
-            button6.Click += button6_Click;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
@@ -331,9 +330,9 @@
             flowLayoutPanel1.ResumeLayout(false);
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             panel2.ResumeLayout(false);
             panel3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
         }
 

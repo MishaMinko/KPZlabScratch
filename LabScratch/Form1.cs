@@ -143,38 +143,29 @@ namespace LabScratch
 
         private void showSelectedNodeInfo()
         {
-            panel1.Visible = true;
             Node node = graphs[(int)numericUpDown1.Value].Nodes[graphs[(int)numericUpDown1.Value].SelectedNodeId];
             textBox1.Text = node.Id.ToString();
             textBox2.Text = node.Type.ToString();
             textBox3.Text = node.Operation;
+            button3.Enabled = true;
             if (node.NextId > -1)
-            {
-                label4.Visible = true;
-                textBox4.Visible = true;
                 textBox4.Text = node.NextId.ToString();
-            }
             else
-            {
-                label4.Visible = false;
-                textBox4.Visible = false;
-            }
+                textBox4.Text = String.Empty;
             if (node.FalseId > -1)
-            {
-                label5.Visible = true;
-                textBox5.Visible = true;
                 textBox5.Text = node.FalseId.ToString();
-            }
             else
-            {
-                label5.Visible = false;
-                textBox5.Visible = false;
-            }
+                textBox5.Text = String.Empty;
         }
 
         private void hideSelectedNodeInfo()
         {
-            panel1.Visible = false;
+            textBox1.Text = String.Empty;
+            textBox2.Text = String.Empty;
+            textBox3.Text = String.Empty;
+            textBox4.Text = String.Empty;
+            textBox5.Text = String.Empty;
+            button3.Enabled = false;
         }
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
@@ -332,17 +323,49 @@ namespace LabScratch
 
         private void button4_Click(object sender, EventArgs e)
         {
-
+            //TODO exporting code
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "JSON files (*.json)|*.json";
+            openFileDialog.Title = "Choose json file with graphs";
 
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    (graphs, variables) = GraphIO.ImportGraphs(openFileDialog.FileName);
+                    numericUpDown1.Value = 0;
+                    pictureBox1.Invalidate();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error importing graphs:\n" + ex.Message);
+                }
+            }
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "JSON files (*.json)|*.json";
+            saveFileDialog.Title = "Save graphs";
+            saveFileDialog.FileName = "graphs.json";
 
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    GraphIO.ExportGraphs(graphs, variables, saveFileDialog.FileName);
+                    MessageBox.Show("Graphs exported successfully.");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error exporting graphs:\n" + ex.Message);
+                }
+            }
         }
     }
 }
