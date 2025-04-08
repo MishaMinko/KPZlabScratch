@@ -59,11 +59,15 @@ namespace LabScratch
                             CreateNodeForm form2 = new CreateNodeForm(variables);
                             if (form2.ShowDialog() == DialogResult.OK)
                             {
-                                bool p = graph.AddNode(new Node(graph.GetAvailableId(), form2.nodeType, form2.res, e.Location));
-                                if (p)
+                                int p = graph.AddNode(new Node(graph.GetAvailableId(), form2.nodeType, form2.res, e.Location));
+                                if (p == 1)
                                     pictureBox1.Invalidate();
-                                else
+                                else if (p == 0)
+                                    MessageBox.Show("Unexpected error", "Node creating error");
+                                else if (p == -1)
                                     MessageBox.Show("You reached the limit of 100 nodes", "Node creating error");
+                                else if (p == -2)
+                                    MessageBox.Show("You reached the limit of 100 variables in this graph", "Node creating error");
                             }
                         }
                     }
