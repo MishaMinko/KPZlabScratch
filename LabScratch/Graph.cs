@@ -43,19 +43,34 @@ namespace LabScratch
                 return 0;
             else if (vs.Count == 1)
             {
-                if (Variables.Count >= Max)
-                    return -2;
-                else
-                    Variables.Add(vs[0]);
+                if (!Variables.Contains(vs[0]))
+                {
+                    if (Variables.Count >= Max)
+                        return -2;
+                    else
+                        Variables.Add(vs[0]);
+                }
             }
             else
             {
-                if (Variables.Count + 1 >= Max)
-                    return -2;
+                if (!Variables.Contains(vs[0]) && !Variables.Contains(vs[1]) && !vs[0].Equals(vs[1]))
+                    {
+                    if (Variables.Count + 1 >= Max)
+                        return -2;
+                    else
+                    {
+                        Variables.Add(vs[0]);
+                        Variables.Add(vs[1]);
+                    }
+                }
                 else
                 {
-                    Variables.Add(vs[0]);
-                    Variables.Add(vs[1]);
+                    if (Variables.Count >= Max)
+                        return -2;
+                    else if (!Variables.Contains(vs[0]))
+                        Variables.Add(vs[0]);
+                    else if (!Variables.Contains(vs[1]))
+                        Variables.Add(vs[1]);
                 }
             }
 
@@ -65,8 +80,9 @@ namespace LabScratch
 
         public void RemoveNode(int id)
         {
-            CheckConnectedVariables(Nodes[id]);
+            Node node = Nodes[id];
             Nodes.Remove(id);
+            CheckConnectedVariables(node);
             CheckConnectedNodes(id);
         }
 
@@ -111,7 +127,26 @@ namespace LabScratch
 
         private void CheckConnectedVariables(Node node)
         {
-
+            List<string> nodeNames = GetVariablesNames(node);
+            bool p = false;
+            foreach (string name in nodeNames)
+            {
+                foreach(Node n in Nodes.Values)
+                {
+                    foreach (string m in GetVariablesNames(n))
+                    {
+                        if (m.Equals(name))
+                        {
+                            p = true;
+                            break;
+                        }
+                    }
+                    if (p)
+                        break;
+                }
+                if (!p)
+                    Variables.Remove(name);
+            }
         }
 
         private List<string> GetVariablesNames(Node node)
