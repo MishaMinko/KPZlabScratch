@@ -1,3 +1,4 @@
+using LabScratch.codeGen;
 using System.Drawing.Drawing2D;
 
 namespace LabScratch
@@ -323,7 +324,28 @@ namespace LabScratch
 
         private void button4_Click(object sender, EventArgs e)
         {
-            //TODO exporting code
+            if(variables.Count > 1)
+            {
+                bool isAnyGraphStarted = false;
+                foreach(Graph graph in graphs)
+                {
+                    if(graph.Nodes.Count > 0)
+                    {
+                        isAnyGraphStarted = true;
+                        break;
+                    }
+                }
+
+                if(isAnyGraphStarted)
+                {
+                    MyCodeGenerator mcg = new MyCodeGenerator();
+                    bool res = mcg.generateCode(graphs, variables);
+                    if (res)
+                        MessageBox.Show("Code generated successfully");
+                    else
+                        MessageBox.Show("Code wasn't generated");
+                }
+            }
         }
 
         private void button5_Click(object sender, EventArgs e)

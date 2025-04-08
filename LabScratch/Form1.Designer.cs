@@ -263,7 +263,7 @@
             button4.Name = "button4";
             button4.Size = new Size(322, 45);
             button4.TabIndex = 10;
-            button4.Text = "Generate code";
+            button4.Text = "Generate C# code";
             button4.UseVisualStyleBackColor = true;
             button4.Click += button4_Click;
             // 
