@@ -52,6 +52,7 @@
             panel3 = new Panel();
             button6 = new Button();
             button5 = new Button();
+            panel4 = new Panel();
             pictureBox1 = new PictureBox();
             contextMenuStrip1 = new ContextMenuStrip(components);
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
@@ -60,6 +61,7 @@
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             panel3.SuspendLayout();
+            panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -88,7 +90,7 @@
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 70.72942F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 29.2705746F));
             tableLayoutPanel1.Controls.Add(flowLayoutPanel1, 1, 0);
-            tableLayoutPanel1.Controls.Add(pictureBox1, 0, 0);
+            tableLayoutPanel1.Controls.Add(panel4, 0, 0);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -99,6 +101,7 @@
             // 
             // flowLayoutPanel1
             // 
+            flowLayoutPanel1.AutoScroll = true;
             flowLayoutPanel1.Controls.Add(numericUpDown1);
             flowLayoutPanel1.Controls.Add(button1);
             flowLayoutPanel1.Controls.Add(listBox1);
@@ -293,14 +296,23 @@
             button5.UseVisualStyleBackColor = true;
             button5.Click += button5_Click;
             // 
+            // panel4
+            // 
+            panel4.AutoScroll = true;
+            panel4.Controls.Add(pictureBox1);
+            panel4.Dock = DockStyle.Fill;
+            panel4.Location = new Point(3, 3);
+            panel4.Name = "panel4";
+            panel4.Size = new Size(830, 747);
+            panel4.TabIndex = 4;
+            // 
             // pictureBox1
             // 
             pictureBox1.BackColor = SystemColors.Window;
-            pictureBox1.Dock = DockStyle.Fill;
-            pictureBox1.Location = new Point(3, 3);
+            pictureBox1.Location = new Point(0, 0);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(830, 747);
-            pictureBox1.TabIndex = 4;
+            pictureBox1.Size = new Size(2000, 2000);
+            pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
             pictureBox1.Paint += pictureBox1_Paint;
             pictureBox1.MouseDown += pictureBox1_MouseDown;
@@ -332,6 +344,7 @@
             panel1.PerformLayout();
             panel2.ResumeLayout(false);
             panel3.ResumeLayout(false);
+            panel4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
         }
@@ -342,7 +355,6 @@
         private NumericUpDown numericUpDown1;
         private TableLayoutPanel tableLayoutPanel1;
         private FlowLayoutPanel flowLayoutPanel1;
-        private PictureBox pictureBox1;
         private ListBox listBox1;
         private Button button2;
         private ContextMenuStrip contextMenuStrip1;
@@ -363,5 +375,7 @@
         private Panel panel3;
         private Button button6;
         private Button button5;
+        private Panel panel4;
+        private PictureBox pictureBox1;
     }
 }
