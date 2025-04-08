@@ -41,6 +41,7 @@
             textBox4 = new TextBox();
             label4 = new Label();
             textBox3 = new TextBox();
+            button3 = new Button();
             label3 = new Label();
             textBox2 = new TextBox();
             label2 = new Label();
@@ -48,12 +49,18 @@
             label1 = new Label();
             pictureBox1 = new PictureBox();
             contextMenuStrip1 = new ContextMenuStrip(components);
-            button3 = new Button();
+            panel2 = new Panel();
+            panel3 = new Panel();
+            button4 = new Button();
+            button5 = new Button();
+            button6 = new Button();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             tableLayoutPanel1.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            panel2.SuspendLayout();
+            panel3.SuspendLayout();
             SuspendLayout();
             // 
             // button1
@@ -97,6 +104,8 @@
             flowLayoutPanel1.Controls.Add(listBox1);
             flowLayoutPanel1.Controls.Add(button2);
             flowLayoutPanel1.Controls.Add(panel1);
+            flowLayoutPanel1.Controls.Add(panel2);
+            flowLayoutPanel1.Controls.Add(panel3);
             flowLayoutPanel1.Dock = DockStyle.Fill;
             flowLayoutPanel1.Location = new Point(839, 3);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
@@ -185,6 +194,16 @@
             textBox3.Size = new Size(224, 31);
             textBox3.TabIndex = 5;
             // 
+            // button3
+            // 
+            button3.Location = new Point(3, 188);
+            button3.Name = "button3";
+            button3.Size = new Size(322, 45);
+            button3.TabIndex = 5;
+            button3.Text = "Delete chosen node";
+            button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
+            // 
             // label3
             // 
             label3.AutoSize = true;
@@ -250,15 +269,52 @@
             contextMenuStrip1.Size = new Size(36, 4);
             contextMenuStrip1.Click += contextMenuStrip1_Click;
             // 
-            // button3
+            // panel2
             // 
-            button3.Location = new Point(3, 188);
-            button3.Name = "button3";
-            button3.Size = new Size(322, 45);
-            button3.TabIndex = 5;
-            button3.Text = "Delete chosen node";
-            button3.UseVisualStyleBackColor = true;
-            button3.Click += button3_Click;
+            panel2.Controls.Add(button4);
+            panel2.Location = new Point(3, 367);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(328, 266);
+            panel2.TabIndex = 5;
+            // 
+            // panel3
+            // 
+            panel3.Controls.Add(button6);
+            panel3.Controls.Add(button5);
+            panel3.Location = new Point(3, 639);
+            panel3.Name = "panel3";
+            panel3.Size = new Size(328, 104);
+            panel3.TabIndex = 6;
+            // 
+            // button4
+            // 
+            button4.Location = new Point(3, 110);
+            button4.Name = "button4";
+            button4.Size = new Size(322, 45);
+            button4.TabIndex = 10;
+            button4.Text = "Generate code";
+            button4.UseVisualStyleBackColor = true;
+            button4.Click += button4_Click;
+            // 
+            // button5
+            // 
+            button5.Location = new Point(3, 3);
+            button5.Name = "button5";
+            button5.Size = new Size(322, 45);
+            button5.TabIndex = 11;
+            button5.Text = "Import graphs";
+            button5.UseVisualStyleBackColor = true;
+            button5.Click += button5_Click;
+            // 
+            // button6
+            // 
+            button6.Location = new Point(3, 54);
+            button6.Name = "button6";
+            button6.Size = new Size(322, 45);
+            button6.TabIndex = 12;
+            button6.Text = "Export graphs";
+            button6.UseVisualStyleBackColor = true;
+            button6.Click += button6_Click;
             // 
             // Form1
             // 
@@ -276,6 +332,8 @@
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            panel2.ResumeLayout(false);
+            panel3.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -301,5 +359,10 @@
         private TextBox textBox3;
         private Label label3;
         private Button button3;
+        private Panel panel2;
+        private Button button4;
+        private Panel panel3;
+        private Button button6;
+        private Button button5;
     }
 }
