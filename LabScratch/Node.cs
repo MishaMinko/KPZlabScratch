@@ -1,4 +1,6 @@
-﻿namespace LabScratch
+﻿using System.Text.Json.Serialization;
+
+namespace LabScratch
 {
     public enum NodeType { Assignment, Console, Condition }
 
@@ -18,6 +20,17 @@
             this.Type = Type;
             this.Operation = Operation;
             this.Position = Position;
+        }
+
+        [JsonConstructor]
+        public Node(int id, NodeType type, string operation, Point position, int nextId, int falseId)
+        {
+            Id = id;
+            Type = type;
+            Operation = operation;
+            Position = position;
+            NextId = nextId;
+            FalseId = falseId;
         }
 
         public int DistanceSquare(Point p)

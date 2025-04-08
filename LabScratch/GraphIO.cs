@@ -28,7 +28,7 @@ namespace LabScratch
             File.WriteAllText(filePath, json);
         }
 
-        public static (Graph[] Graphs, Dictionary<string, int> Variables) ImportGraphs(string filePath)
+        public static (Graph[], Dictionary<string, int>) ImportGraphs(string filePath)
         {
             if (!File.Exists(filePath))
                 return (Array.Empty<Graph>(), new Dictionary<string, int>());

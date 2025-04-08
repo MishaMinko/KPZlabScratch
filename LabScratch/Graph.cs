@@ -1,4 +1,6 @@
-﻿namespace LabScratch
+﻿using System.Text.Json.Serialization;
+
+namespace LabScratch
 {
     public class Graph
     {
@@ -12,6 +14,14 @@
             SelectedNodeId = -1;
             Nodes = new Dictionary<int, Node>();
             Variables = new Dictionary<string, int>();
+        }
+
+        [JsonConstructor]
+        public Graph(Dictionary<int, Node> nodes, Dictionary<string, int> variables, int selectedNodeId)
+        {
+            Nodes = nodes;
+            Variables = variables;
+            SelectedNodeId = selectedNodeId;
         }
 
         public bool checkCollision(Point pos)
