@@ -149,7 +149,7 @@ namespace LabScratch
             }
         }
 
-        private List<string> GetVariablesNames(Node node)
+        public List<string> GetVariablesNames(Node node)
         {
             List<string> names = new List<string>();
 
@@ -185,5 +185,29 @@ namespace LabScratch
 
             return names;
         }
+
+        public int GetLiteral(Node node)
+        {
+            if (node.Type == NodeType.Assignment)
+            {
+                string[] str = node.Operation.Split('=');
+                string c = str[1];
+                if (Char.IsDigit(c[0]))
+                    return Convert.ToInt32(c);
+            }
+            else if (node.Type == NodeType.Condition)
+            {
+                string[] str = null;
+                if (node.Operation.Contains('<'))
+                    str = node.Operation.Split('<');
+                else
+                    str = node.Operation.Split("==");
+                if (str != null && str.Length == 2)
+                    return Convert.ToInt32(str[1]);
+            }
+
+            throw new NullReferenceException("Literal not found exception.");
+        }
+
     }
 }

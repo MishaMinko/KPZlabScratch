@@ -21,11 +21,30 @@ namespace LabScratch.codeGen
             if (nonEmptyGraphs.Count < 1)
                 return false;
 
+            for (int i = 0; i < nonEmptyGraphs.Count; i++)
+                sb.AppendLine(GenerateThreadFunc(nonEmptyGraphs[i], i));
+
             sb.AppendLine("}\r\n");
 
             ExportCode(sb.ToString());
 
             return true;
+        }
+
+        private string GenerateThreadFunc(Graph graph, int index)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("static void ThreadFunc" + index + "()");
+            sb.AppendLine("{");
+
+            foreach(KeyValuePair<int, Node> node in graph.Nodes)
+            {
+
+            }
+
+            sb.AppendLine("}");
+
+            return sb.ToString();
         }
 
         private void ExportCode(string str)
