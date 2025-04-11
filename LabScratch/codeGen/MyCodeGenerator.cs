@@ -39,7 +39,28 @@ namespace LabScratch.codeGen
 
             foreach(KeyValuePair<int, Node> node in graph.Nodes)
             {
-
+                List<string> variables = graph.GetVariablesNames(node.Value);
+                if (node.Value.Type == NodeType.Assignment)
+                {
+                    if (variables.Count == 2)
+                        sb.AppendLine(NodeTypeAssingmentOne(variables[0], variables[1]));
+                    else
+                        sb.AppendLine(NodeTypeAssingmentTwo(variables[0], graph.GetLiteral(node.Value)));
+                }
+                else if (node.Value.Type == NodeType.Console)
+                {
+                    if (node.Value.Operation.StartsWith("INPUT"))
+                        sb.AppendLine(NodeTypeConsoleOne(variables[0]));
+                    else
+                        sb.AppendLine(NodeTypeConsoleTwo(variables[0]));
+                }
+                else
+                {
+                    int c = graph.GetLiteral(node.Value);
+                    //TODO:
+                    //V==C
+                    //V<C
+                }
             }
 
             sb.AppendLine("}");
