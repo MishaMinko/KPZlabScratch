@@ -343,7 +343,7 @@ namespace LabScratch
                 if(isAnyGraphStarted)
                 {
                     MyCodeGenerator mcg = new MyCodeGenerator();
-                    bool res = mcg.generateCode(graphs, variables);
+                    bool res = mcg.GenerateCode(graphs, variables);
                     if (res)
                         MessageBox.Show("Code generated successfully");
                     else
