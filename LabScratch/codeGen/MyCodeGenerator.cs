@@ -11,7 +11,7 @@ namespace LabScratch.codeGen
             sb.AppendLine("class MyProgram");
             sb.AppendLine("{");
             sb.AppendLine(GenerateVariables(variables));
-            sb.AppendLine("static object locker = new object();");
+            sb.AppendLine("static object locker = new object();\r\n");
 
             List<Graph> nonEmptyGraphs = new List<Graph>();
             foreach (Graph graph in graphs)
@@ -21,11 +21,31 @@ namespace LabScratch.codeGen
             if (nonEmptyGraphs.Count < 1)
                 return false;
 
-            sb.AppendLine("}");
+            sb.AppendLine("}\r\n");
 
-            string str = sb.ToString();
+            ExportCode(sb.ToString());
 
-            return false;
+            return true;
+        }
+
+        private void ExportCode(string str)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "C# Source Files (*.cs)|*.cs";
+            saveFileDialog.Title = "Export program code";
+            saveFileDialog.FileName = "MyProgram.cs";
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    File.WriteAllText(saveFileDialog.FileName, str);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error exporting program code:\n" + ex.Message);
+                }
+            }
         }
 
         private string GenerateVariables(Dictionary<string, int> variables)
@@ -62,5 +82,11 @@ namespace LabScratch.codeGen
         {
             return $"Console.WriteLine(\"{v} = \" + {v});";
         }
+
+        //TODO:
+        //V==C
+        //V<C
+        //Creating methods for threads
+        //Creating starting threads
     }
 }

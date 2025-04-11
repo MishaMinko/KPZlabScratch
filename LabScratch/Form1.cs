@@ -345,9 +345,9 @@ namespace LabScratch
                     MyCodeGenerator mcg = new MyCodeGenerator();
                     bool res = mcg.GenerateCode(graphs, variables);
                     if (res)
-                        MessageBox.Show("Code generated successfully");
+                        MessageBox.Show("Program code exported successfully.");
                     else
-                        MessageBox.Show("Code wasn't generated");
+                        MessageBox.Show("Something went wrong exporting program code.");
                 }
             }
         }
