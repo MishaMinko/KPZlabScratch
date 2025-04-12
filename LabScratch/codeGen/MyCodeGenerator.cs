@@ -37,53 +37,33 @@ namespace LabScratch.codeGen
             sb.AppendLine("static void ThreadFunc" + index + "()");
             sb.AppendLine("{");
 
-            Node currentNode = null;
-            foreach (KeyValuePair<int, Node> node in graph.Nodes)
-            {
-                if (node.Value != null)
-                {
-                    currentNode = node.Value;
-                    break;
-                }
-            }
+            CodeAnalyser analyser = new CodeAnalyser(graph);
+            List<string> plan = analyser.GetExecutionPlan();
 
-            int startIndex = currentNode.Id;
+            foreach (string planNode in plan)
+                sb.AppendLine(planNode);
 
-            do
-            {
-                List<string> variables = graph.GetVariablesNames(currentNode);
-                if (currentNode.Type == NodeType.Assignment)
-                {
-                    if (variables.Count == 2)
-                        sb.AppendLine(NodeTypeAssingmentOne(variables[0], variables[1]));
-                    else
-                        sb.AppendLine(NodeTypeAssingmentTwo(variables[0], graph.GetLiteral(currentNode)));
-
-                    if (currentNode.NextId > -1)
-                        currentNode = graph.Nodes[currentNode.NextId];
-                    else
-                        currentNode = null;
-                }
-                else if (currentNode.Type == NodeType.Console)
-                {
-                    if (currentNode.Operation.StartsWith("INPUT"))
-                        sb.AppendLine(NodeTypeConsoleOne(variables[0]));
-                    else
-                        sb.AppendLine(NodeTypeConsoleTwo(variables[0]));
-
-                    if (currentNode.NextId > -1)
-                        currentNode = graph.Nodes[currentNode.NextId];
-                    else
-                        currentNode = null;
-                }
-                else
-                {
-                    int c = graph.GetLiteral(currentNode);
-                    //TODO:
-                    //V==C
-                    //V<C
-                }
-            } while (currentNode != null);
+            //foreach (int nodeId in plan)
+            //{
+            //    Node currentNode = graph.Nodes[nodeId];
+            //    if (currentNode.Type == NodeType.Assignment)
+            //        sb.AppendLine(currentNode.Operation + ";");
+            //    else if (currentNode.Type == NodeType.Console)
+            //    {
+            //        List<string> variables = graph.GetVariablesNames(currentNode);
+            //        if (currentNode.Operation.StartsWith("INPUT"))
+            //            sb.AppendLine(NodeTypeConsoleOne(variables[0]));
+            //        else
+            //            sb.AppendLine(NodeTypeConsoleTwo(variables[0]));
+            //    }
+            //    else
+            //    {
+            //        int c = graph.GetLiteral(currentNode);
+            //        //TODO:
+            //        //V==C
+            //        //V<C
+            //    }
+            //}
 
             sb.AppendLine("}");
 
@@ -116,16 +96,6 @@ namespace LabScratch.codeGen
             foreach (KeyValuePair<string, int> v in variables)
                 res += v.Key + "=" + v.Value + ",";
             return res.Remove(res.Length - 1) + ";";
-        }
-
-        private string NodeTypeAssingmentOne(string v1, string v2) //V1=V2
-        {
-            return v1 + "=" + v2 + ";";
-        }
-
-        private string NodeTypeAssingmentTwo(string v, int c) //V=C
-        {
-            return v + "=" + c.ToString() + ";";
         }
 
         private string NodeTypeConsoleOne(string v) //INPUT V

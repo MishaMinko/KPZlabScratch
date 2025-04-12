@@ -80,6 +80,7 @@ namespace LabScratch
 
         public void RemoveNode(int id)
         {
+            SelectedNodeId = -1;
             Node node = Nodes[id];
             Nodes.Remove(id);
             CheckConnectedVariables(node);
@@ -206,7 +207,7 @@ namespace LabScratch
                     return Convert.ToInt32(str[1]);
             }
 
-            throw new NullReferenceException("Literal not found exception.");
+            return -9991999;
         }
 
     }
