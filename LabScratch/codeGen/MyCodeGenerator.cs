@@ -26,7 +26,7 @@ namespace LabScratch.codeGen
 
             sb.AppendLine("}\r\n");
 
-            ExportCode(sb.ToString());
+            //ExportCode(sb.ToString());
 
             return true;
         }
@@ -37,11 +37,14 @@ namespace LabScratch.codeGen
             sb.AppendLine("static void ThreadFunc" + index + "()");
             sb.AppendLine("{");
 
-            CodeAnalyser analyser = new CodeAnalyser(graph);
-            List<string> plan = analyser.GetExecutionPlan();
+            CodePlanner codePlanner = new CodePlanner(graph);
+            codePlanner.GeneratePlan();
 
-            foreach (string planNode in plan)
-                sb.AppendLine(planNode);
+            //CodeAnalyser analyser = new CodeAnalyser(graph);
+            //List<string> plan = analyser.GetExecutionPlan();
+
+            //foreach (string planNode in plan)
+            //    sb.AppendLine(planNode);
 
             //foreach (int nodeId in plan)
             //{
