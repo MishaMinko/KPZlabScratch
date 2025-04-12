@@ -37,31 +37,53 @@ namespace LabScratch.codeGen
             sb.AppendLine("static void ThreadFunc" + index + "()");
             sb.AppendLine("{");
 
-            foreach(KeyValuePair<int, Node> node in graph.Nodes)
+            Node currentNode = null;
+            foreach (KeyValuePair<int, Node> node in graph.Nodes)
             {
-                List<string> variables = graph.GetVariablesNames(node.Value);
-                if (node.Value.Type == NodeType.Assignment)
+                if (node.Value != null)
+                {
+                    currentNode = node.Value;
+                    break;
+                }
+            }
+
+            int startIndex = currentNode.Id;
+
+            do
+            {
+                List<string> variables = graph.GetVariablesNames(currentNode);
+                if (currentNode.Type == NodeType.Assignment)
                 {
                     if (variables.Count == 2)
                         sb.AppendLine(NodeTypeAssingmentOne(variables[0], variables[1]));
                     else
-                        sb.AppendLine(NodeTypeAssingmentTwo(variables[0], graph.GetLiteral(node.Value)));
+                        sb.AppendLine(NodeTypeAssingmentTwo(variables[0], graph.GetLiteral(currentNode)));
+
+                    if (currentNode.NextId > -1)
+                        currentNode = graph.Nodes[currentNode.NextId];
+                    else
+                        currentNode = null;
                 }
-                else if (node.Value.Type == NodeType.Console)
+                else if (currentNode.Type == NodeType.Console)
                 {
-                    if (node.Value.Operation.StartsWith("INPUT"))
+                    if (currentNode.Operation.StartsWith("INPUT"))
                         sb.AppendLine(NodeTypeConsoleOne(variables[0]));
                     else
                         sb.AppendLine(NodeTypeConsoleTwo(variables[0]));
+
+                    if (currentNode.NextId > -1)
+                        currentNode = graph.Nodes[currentNode.NextId];
+                    else
+                        currentNode = null;
                 }
                 else
                 {
-                    int c = graph.GetLiteral(node.Value);
+                    int c = graph.GetLiteral(currentNode);
                     //TODO:
                     //V==C
                     //V<C
                 }
-            }
+            } while (currentNode != null);
 
             sb.AppendLine("}");
 
@@ -126,7 +148,7 @@ namespace LabScratch.codeGen
         //TODO:
         //V==C
         //V<C
-        //Creating methods for threads
+        //Finish creating methods for threads
         //Creating starting threads
     }
 }
