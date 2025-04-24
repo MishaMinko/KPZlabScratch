@@ -50,7 +50,7 @@
 
             startNode = CreateNodeTree(startId, new List<int>());
             SetNullNodes(startNode);
-            SetConnections(startNode, startNode.id);
+            SetConnections(startNode, -1);
         }
 
         private NodeTree CreateNodeTree(int index, List<int> createdIndexes)
@@ -102,7 +102,30 @@
 
         private void SetConnections(NodeTree node, int id)
         {
-            //
+            if(id > -1)
+                if(!node.connectedId.Contains(id))
+                    node.connectedId.Add(id);
+
+            if (node.nextNode != null)
+            {
+                if (node.nextNode != startNode)
+                    SetConnections(node.nextNode, node.id);
+                else
+                {
+                    if (!node.nextNode.connectedId.Contains(node.id))
+                        node.nextNode.connectedId.Add(node.id);
+                }
+            }
+            if (node.falseNode != null)
+            {
+                if (node.falseNode != startNode)
+                    SetConnections(node.falseNode, node.id);
+                else
+                {
+                    if (!node.falseNode.connectedId.Contains(node.id))
+                        node.falseNode.connectedId.Add(node.id);
+                }
+            }
         }
 
         //public (List<int>, List<int>) GetCycles(NodeTree node, List<int> startCycleId, List<int> endCycleId)
