@@ -12,6 +12,7 @@
         public List<string> GeneratePlan()
         {
             List<string> plan = new List<string>();
+            List<CycleInfo> cycleInfos = tree.GetCycles();
             //(List<int> startCycles, List<int> endCycles) = tree.GetCycles(tree.startNode, new List<int>(), new List<int>());
             //HashSet<int> visited = new HashSet<int>();
 
@@ -51,7 +52,13 @@
             startNode = CreateNodeTree(startId, new List<int>());
             SetNodes(startNode, new Dictionary<int, HashSet<int>>());
             SetConnections(startNode, -1, new Dictionary<int, HashSet<int>>());
+        }
+
+        public List<CycleInfo> GetCycles()
+        {
             Dictionary<int, int> visits = GetPossibleNodeVisitsCount(startNode, new Dictionary<int, int>(), new Dictionary<int, HashSet<int>>());
+            List<CycleInfo> infos = CheckVisits(visits);
+            return infos;
         }
 
         private NodeTree CreateNodeTree(int index, List<int> createdIndexes)
@@ -127,7 +134,7 @@
             }
         }
 
-        public Dictionary<int, int> GetPossibleNodeVisitsCount(NodeTree node, Dictionary<int, int> visits, Dictionary<int, HashSet<int>> visited)
+        private Dictionary<int, int> GetPossibleNodeVisitsCount(NodeTree node, Dictionary<int, int> visits, Dictionary<int, HashSet<int>> visited)
         {
             if (!visited.ContainsKey(node.id))
                 visited[node.id] = new HashSet<int>();
@@ -151,35 +158,144 @@
             return visits;
         }
 
-        //public (List<int>, List<int>) GetCycles(NodeTree node, List<int> startCycleId, List<int> endCycleId)
-        //{
-        //    if (node.nextId != -1 && node.nextNode == null)
-        //    {
-        //        startCycleId.Add(node.nextId);
-        //        endCycleId.Add(node.id);
-        //    }
-        //    else if (node.falseId != -1 && node.falseNode == null)
-        //    {
-        //        startCycleId.Add(node.falseId);
-        //        endCycleId.Add(node.id);
-        //    }
-        //    else
-        //    {
-        //        if (node.nextNode != null)
-        //        {
-        //            (startCycleId, endCycleId) = GetCycles(node.nextNode, startCycleId, endCycleId);
-        //            if (node.falseNode != null)
-        //            {
-        //                (List<int> falseStart, List<int> falseEnd) = GetCycles(node.falseNode, startCycleId, endCycleId);
-        //                startCycleId = startCycleId.Union(falseStart).ToList();
-        //                endCycleId = endCycleId.Union(falseEnd).ToList();
-        //            }
-        //        }
-        //        else if (node.falseNode != null)
-        //            (startCycleId, endCycleId) = GetCycles(node.falseNode, startCycleId, endCycleId);
-        //    }
-        //    return (startCycleId, endCycleId);
-        //}
+        private List<CycleInfo> CheckVisits(Dictionary<int, int> visits)
+        {
+            if (visits.Count < 1)
+                return null;
+
+            List<CycleInfo> infos = new List<CycleInfo>();
+            foreach(KeyValuePair<int, int> visit in visits)
+            {
+                if(visit.Value.Equals(2))
+                {
+                    NodeTree node = FindNodeTreeById(startNode, visit.Key);
+                    if(node.nextId != -1 || node.falseId != -1)
+                    {
+                        int startId = FindStartCycleNode(node, node.id, false);
+                        if (startId == -1)
+                            throw new NotFiniteNumberException();
+
+                        node = FindNodeTreeById(startNode, startId);
+
+                        int endId = -1;
+                        foreach(int checkId in node.connectedId)
+                        {
+                            if(CheckIfReachesNodeByConnections(FindNodeTreeById(startNode, checkId), node.id))
+                            {
+                                endId = checkId;
+                                break;
+                            }    
+                        }
+                        if (endId == -1)
+                            throw new NotFiniteNumberException();
+
+                        NodeType nodeType = nodes[startId].Type;
+                        CycleTypes cycleType = CycleTypes.Undefined;
+
+                        if (nodeType == NodeType.Condition)
+                        {
+                            if (node.nextNode != null && node.falseNode != null)
+                            {
+                                bool checkTrue = CheckIfReachesNode(node.nextNode, endId);
+                                bool checkFalse = CheckIfReachesNode(node.falseNode, endId);
+
+                                if (checkTrue && checkFalse)
+                                    cycleType = CycleTypes.WhileTrue;
+                                else if (checkTrue)
+                                    cycleType = CycleTypes.WhileIfTrue;
+                                else
+                                    cycleType = CycleTypes.WhileIfFalse;
+                            }
+                            else if (node.nextNode == null)
+                                cycleType = CycleTypes.WhileIfFalse;
+                            else
+                                cycleType = CycleTypes.WhileIfTrue;
+                        }
+                        else
+                            cycleType = CycleTypes.WhileTrue;
+
+                        infos.Add(new CycleInfo { startId = startId, endId = endId, cycleType = cycleType });
+                    }
+                }
+            }
+            return infos;
+        }
+
+        private bool CheckIfReachesNodeByConnections(NodeTree node, int targetId)
+        {
+            if (node.id == targetId)
+                return true;
+
+            if (node.connectedId.Count > 0)
+                foreach (int conId in node.connectedId)
+                    if (CheckIfReachesNodeByConnections(FindNodeTreeById(startNode, conId), targetId))
+                        return true;
+
+            return false;
+        }
+
+        private bool CheckIfReachesNode(NodeTree node, int targetId)
+        {
+            if (node.id == targetId)
+                return true;
+
+            if (node.nextNode != null)
+            {
+                bool p = CheckIfReachesNode(node.nextNode, targetId);
+                if (p)
+                    return p;
+            }
+            if (node.falseNode != null)
+            {
+                bool p = CheckIfReachesNode(node.falseNode, targetId);
+                return p;
+            }
+
+            return false;
+        }
+
+        private int FindStartCycleNode(NodeTree node, int startId, bool didStart)
+        {
+            if (nodes[node.id].Type == NodeType.Condition && didStart)
+                return node.id;
+
+            if (node.id == startId && didStart)
+                return startId;
+
+            List<int> ress = new List<int>();
+
+            if (node.nextNode != null)
+                ress.Add(FindStartCycleNode(node.nextNode, startId, true));
+            if (node.falseNode != null)
+                ress.Add(FindStartCycleNode(node.falseNode, startId, true));
+
+            if (ress.Count < 2)
+                return ress[0];
+            else if (ress.Count == 2)
+            {
+                int r1 = ress[0], r2 = ress[1];
+                if (r1 == r2)
+                    return r1;
+                else
+                {
+                    if (r1 == startId)
+                        return r2;
+                    else if (r2 == startId)
+                        return r1;
+                    else
+                    {
+                        if (nodes[r1].Type == NodeType.Condition && nodes[r2].Type == NodeType.Condition)
+                            return -1;
+                        else if (nodes[r1].Type == NodeType.Condition)
+                            return r1;
+                        else
+                            return r2;
+                    }
+                }
+            }
+
+            return startId;
+        }
 
         private NodeTree FindNodeTreeById(NodeTree node, int id)
         {
@@ -203,6 +319,16 @@
                     return null;
             }
         }
+    }
+
+    enum CycleTypes
+    { WhileTrue, WhileIfTrue, WhileIfFalse, Undefined }
+
+    struct CycleInfo
+    {
+        public int startId;
+        public int endId;
+        public CycleTypes cycleType;
     }
 
     class NodeTree
