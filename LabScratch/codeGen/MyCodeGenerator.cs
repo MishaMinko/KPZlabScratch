@@ -73,26 +73,6 @@ namespace LabScratch.codeGen
             return sb.ToString();
         }
 
-        private void ExportCode(string str)
-        {
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "C# Source Files (*.cs)|*.cs";
-            saveFileDialog.Title = "Export program code";
-            saveFileDialog.FileName = "MyProgram.cs";
-
-            if (saveFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                try
-                {
-                    File.WriteAllText(saveFileDialog.FileName, str);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error exporting program code:\n" + ex.Message);
-                }
-            }
-        }
-
         private string GenerateVariables(Dictionary<string, int> variables)
         {
             string res = "static int ";
@@ -123,5 +103,41 @@ namespace LabScratch.codeGen
         //V<C
         //Finish creating methods for threads
         //Creating starting threads
+
+
+
+
+        private void ExportCode(string str)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "C# Source Files (*.cs)|*.cs";
+            saveFileDialog.Title = "Export program code";
+            saveFileDialog.FileName = "MyProgram.cs";
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    File.WriteAllText(saveFileDialog.FileName, str);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error exporting program code:\n" + ex.Message);
+                }
+            }
+        }
+    }
+
+    public enum InsertTypes
+    {
+        WhileTrue = 100,
+        WhileIfTrue,
+        WhileIfFalse,
+        If,
+        Else,
+        UseLocker,
+        OpenBorder,         //{
+        CloseBorder,        //}
+        Undefined = 1000
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace LabScratch.codeGen
+﻿using System.Text;
+
+namespace LabScratch.codeGen
 {
     public class CodePlanner
     {
@@ -13,12 +15,8 @@
         {
             List<string> plan = new List<string>();
             List<CycleInfo> cycleInfos = tree.GetCycles();
-            //(List<int> startCycles, List<int> endCycles) = tree.GetCycles(tree.startNode, new List<int>(), new List<int>());
-            //HashSet<int> visited = new HashSet<int>();
 
-            //foreach (var node in graph.Nodes.Values)
-            //    if (!visited.Contains(node.Id))
-            //        BuildExecutionPlan(node.Id, visited, new Stack<int>(), plan);
+
 
             return plan;
         }
@@ -190,7 +188,7 @@
                             throw new NotFiniteNumberException();
 
                         NodeType nodeType = nodes[startId].Type;
-                        CycleTypes cycleType = CycleTypes.Undefined;
+                        InsertTypes cycleType = InsertTypes.Undefined;
 
                         if (nodeType == NodeType.Condition)
                         {
@@ -200,19 +198,19 @@
                                 bool checkFalse = CheckIfReachesNode(node.falseNode, endId);
 
                                 if (checkTrue && checkFalse)
-                                    cycleType = CycleTypes.WhileTrue;
+                                    cycleType = InsertTypes.WhileTrue;
                                 else if (checkTrue)
-                                    cycleType = CycleTypes.WhileIfTrue;
+                                    cycleType = InsertTypes.WhileIfTrue;
                                 else
-                                    cycleType = CycleTypes.WhileIfFalse;
+                                    cycleType = InsertTypes.WhileIfFalse;
                             }
                             else if (node.nextNode == null)
-                                cycleType = CycleTypes.WhileIfFalse;
+                                cycleType = InsertTypes.WhileIfFalse;
                             else
-                                cycleType = CycleTypes.WhileIfTrue;
+                                cycleType = InsertTypes.WhileIfTrue;
                         }
                         else
-                            cycleType = CycleTypes.WhileTrue;
+                            cycleType = InsertTypes.WhileTrue;
 
                         infos.Add(new CycleInfo { startId = startId, endId = endId, cycleType = cycleType });
                     }
@@ -321,14 +319,11 @@
         }
     }
 
-    enum CycleTypes
-    { WhileTrue, WhileIfTrue, WhileIfFalse, Undefined }
-
     struct CycleInfo
     {
         public int startId;
         public int endId;
-        public CycleTypes cycleType;
+        public InsertTypes cycleType;
     }
 
     class NodeTree
