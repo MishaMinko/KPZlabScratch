@@ -49,8 +49,9 @@
                 return;
 
             startNode = CreateNodeTree(startId, new List<int>());
-            SetNullNodes(startNode);
-            SetConnections(startNode, -1);
+            SetNodes(startNode, new Dictionary<int, HashSet<int>>());
+            SetConnections(startNode, -1, new Dictionary<int, HashSet<int>>());
+            Dictionary<int, int> visits = GetPossibleNodeVisitsCount(startNode, new Dictionary<int, int>(), new Dictionary<int, HashSet<int>>());
         }
 
         private NodeTree CreateNodeTree(int index, List<int> createdIndexes)
@@ -66,66 +67,88 @@
             return nodeTree;
         }
 
-        private void SetNullNodes(NodeTree node)
+        private void SetNodes(NodeTree node, Dictionary<int, HashSet<int>> visited)
         {
-            if (node.nextNode == null && node.nextId != -1)
-                node.nextNode = FindNodeTreeById(startNode, node.nextId);
-            if (node.falseNode == null && node.falseId != -1)
-                node.falseNode = FindNodeTreeById(startNode, node.falseId);
-            if (node.nextNode != null && node.nextNode != startNode)
-                SetNullNodes(node.nextNode);
-            if (node.falseNode != null && node.falseNode != startNode)
-                SetNullNodes(node.falseNode);
-        }
+            if (!visited.ContainsKey(node.id))
+                visited[node.id] = new HashSet<int>();
 
-        private NodeTree FindNodeTreeById(NodeTree node, int id)
-        {
-            if(node.id == id) 
-                return node;
-            else
+            if (node.nextId != -1 && !visited[node.id].Contains(node.nextId))
             {
-                if (node.nextNode != null)
-                {
-                    if (node.falseNode != null)
-                    {
-                        NodeTree nt = FindNodeTreeById(node.falseNode, id);
-                        if (nt != null)
-                            return nt;
-                    }
-                    return FindNodeTreeById(node.nextNode, id);
-                }
-                else if (node.falseNode != null)
-                    return FindNodeTreeById(node.falseNode, id);
-                else return null;
+                if (node.nextNode == null)
+                    node.nextNode = FindNodeTreeById(startNode, node.nextId);
+                visited[node.id].Add(node.nextId);
+                if (node.nextNode != null && node.nextNode != startNode)
+                    SetNodes(node.nextNode, visited);
+            }
+
+            if (node.falseId != -1 && !visited[node.id].Contains(node.falseId))
+            {
+                if (node.falseNode == null)
+                    node.falseNode = FindNodeTreeById(startNode, node.falseId);
+                visited[node.id].Add(node.falseId);
+                if (node.falseNode != null && node.falseNode != startNode)
+                    SetNodes(node.falseNode, visited);
             }
         }
 
-        private void SetConnections(NodeTree node, int id)
+        private void SetConnections(NodeTree node, int id, Dictionary<int, HashSet<int>> visited)
         {
-            if(id > -1)
-                if(!node.connectedId.Contains(id))
+            if (id > -1)
+                if (!node.connectedId.Contains(id))
                     node.connectedId.Add(id);
+
+            if (!visited.ContainsKey(node.id))
+                visited[node.id] = new HashSet<int>();
 
             if (node.nextNode != null)
             {
-                if (node.nextNode != startNode)
-                    SetConnections(node.nextNode, node.id);
-                else
+                if (!visited[node.id].Contains(node.nextId))
                 {
-                    if (!node.nextNode.connectedId.Contains(node.id))
+                    visited[node.id].Add(node.nextId);
+
+                    if (node.nextNode != startNode)
+                        SetConnections(node.nextNode, node.id, visited);
+                    else if (!node.nextNode.connectedId.Contains(node.id))
                         node.nextNode.connectedId.Add(node.id);
                 }
             }
+
             if (node.falseNode != null)
             {
-                if (node.falseNode != startNode)
-                    SetConnections(node.falseNode, node.id);
-                else
+                if (!visited[node.id].Contains(node.falseId))
                 {
-                    if (!node.falseNode.connectedId.Contains(node.id))
+                    visited[node.id].Add(node.falseId);
+
+                    if (node.falseNode != startNode)
+                        SetConnections(node.falseNode, node.id, visited);
+                    else if (!node.falseNode.connectedId.Contains(node.id))
                         node.falseNode.connectedId.Add(node.id);
                 }
             }
+        }
+
+        public Dictionary<int, int> GetPossibleNodeVisitsCount(NodeTree node, Dictionary<int, int> visits, Dictionary<int, HashSet<int>> visited)
+        {
+            if (!visited.ContainsKey(node.id))
+                visited[node.id] = new HashSet<int>();
+
+            if (visits.ContainsKey(node.id))
+                visits[node.id]++;
+            else
+                visits[node.id] = 1;
+
+            if (node.nextNode != null && !visited[node.id].Contains(node.nextId))
+            {
+                visited[node.id].Add(node.nextId);
+                visits = GetPossibleNodeVisitsCount(node.nextNode, visits, visited);
+            }
+            if (node.falseNode != null && !visited[node.id].Contains(node.falseId))
+            {
+                visited[node.id].Add(node.falseId);
+                visits = GetPossibleNodeVisitsCount(node.falseNode, visits, visited);
+            }
+
+            return visits;
         }
 
         //public (List<int>, List<int>) GetCycles(NodeTree node, List<int> startCycleId, List<int> endCycleId)
@@ -142,21 +165,44 @@
         //    }
         //    else
         //    {
-        //        if(node.nextNode != null)
+        //        if (node.nextNode != null)
         //        {
         //            (startCycleId, endCycleId) = GetCycles(node.nextNode, startCycleId, endCycleId);
-        //            if(node.falseNode != null)
+        //            if (node.falseNode != null)
         //            {
         //                (List<int> falseStart, List<int> falseEnd) = GetCycles(node.falseNode, startCycleId, endCycleId);
         //                startCycleId = startCycleId.Union(falseStart).ToList();
         //                endCycleId = endCycleId.Union(falseEnd).ToList();
         //            }
         //        }
-        //        else if(node.falseNode != null)
+        //        else if (node.falseNode != null)
         //            (startCycleId, endCycleId) = GetCycles(node.falseNode, startCycleId, endCycleId);
         //    }
         //    return (startCycleId, endCycleId);
         //}
+
+        private NodeTree FindNodeTreeById(NodeTree node, int id)
+        {
+            if (node.id == id)
+                return node;
+            else
+            {
+                if (node.nextNode != null)
+                {
+                    if (node.falseNode != null)
+                    {
+                        NodeTree nt = FindNodeTreeById(node.falseNode, id);
+                        if (nt != null)
+                            return nt;
+                    }
+                    return FindNodeTreeById(node.nextNode, id);
+                }
+                else if (node.falseNode != null)
+                    return FindNodeTreeById(node.falseNode, id);
+                else 
+                    return null;
+            }
+        }
     }
 
     class NodeTree
