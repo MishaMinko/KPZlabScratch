@@ -11,20 +11,55 @@ namespace LabScratch.codeGen
             tree = new Tree(graph.Nodes);
         }
 
-        public List<string> GeneratePlan()
+        public string GeneratePlan()
         {
-            List<string> plan = new List<string>();
+            StringBuilder sb = new StringBuilder();
             List<CycleInfo> cycleInfos = tree.GetCycles();
+            cycleInfos = cycleInfos.OrderBy(x => x.startId).ToList();
+
+            sb.AppendLine(WriteNodeTree(tree.startNode, cycleInfos));
+
+            return sb.ToString();
+        }
+
+        private string WriteNodeTree(NodeTree node, List<CycleInfo> cycleInfos)
+        {
+            StringBuilder sb = new StringBuilder();
+            bool endedTree = false;
+            while ((node.nextNode != null || node.falseNode != null) && !endedTree)
+            {
+                if (CheckIfNodeInCycle(node.id, cycleInfos) != -1)
+                {
+                    CycleInfo info = cycleInfos[CheckIfNodeInCycle(node.id, cycleInfos)];
 
 
 
-            return plan;
+                    cycleInfos.Remove(info);
+                }
+                else if (tree.nodes[node.id].Type == NodeType.Condition)
+                {
+
+                }
+                else
+                {
+
+                }
+            }
+            return sb.ToString();
+        }
+
+        private int CheckIfNodeInCycle(int id, List<CycleInfo> cycleInfos)
+        {
+            foreach (CycleInfo cycleInfo in cycleInfos)
+                if (cycleInfo.startId == id)
+                    return cycleInfos.IndexOf(cycleInfo);
+            return -1;
         }
     }
 
     class Tree
     {
-        Dictionary<int, Node> nodes;
+        public Dictionary<int, Node> nodes;
         public NodeTree startNode;
 
         public Tree(Dictionary<int, Node> nodes)
@@ -295,7 +330,7 @@ namespace LabScratch.codeGen
             return startId;
         }
 
-        private NodeTree FindNodeTreeById(NodeTree node, int id)
+        public NodeTree FindNodeTreeById(NodeTree node, int id)
         {
             if (node.id == id)
                 return node;
