@@ -134,6 +134,7 @@ namespace LabScratch.codeGen
         WhileIfTrue,
         WhileIfFalse,
         If,
+        IfNot,
         Else,
         UseLocker,
         OpenBorder,         //{

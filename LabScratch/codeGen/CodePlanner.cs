@@ -15,7 +15,6 @@ namespace LabScratch.codeGen
         {
             StringBuilder sb = new StringBuilder();
             List<CycleInfo> cycleInfos = tree.GetCycles();
-            cycleInfos = cycleInfos.OrderBy(x => x.startId).ToList();
 
             sb.AppendLine(WriteNodeTree(tree.startNode, cycleInfos));
 
@@ -25,30 +24,86 @@ namespace LabScratch.codeGen
         private string WriteNodeTree(NodeTree node, List<CycleInfo> cycleInfos)
         {
             StringBuilder sb = new StringBuilder();
-            bool endedTree = false;
-            while ((node.nextNode != null || node.falseNode != null) && !endedTree)
+            while (node != null)
             {
-                if (CheckIfNodeInCycle(node.id, cycleInfos) != -1)
+                if (CheckIfNodeStartsCycle(node.id, cycleInfos) != -1)
                 {
-                    CycleInfo info = cycleInfos[CheckIfNodeInCycle(node.id, cycleInfos)];
-
-
-
-                    cycleInfos.Remove(info);
+                    sb.AppendLine(WriteNodeCycle(node, cycleInfos));
+                    break;
                 }
                 else if (tree.nodes[node.id].Type == NodeType.Condition)
                 {
-
+                    sb.AppendLine(WriteNodeCondition(node, cycleInfos));
+                    break;
                 }
                 else
                 {
-
+                    sb.AppendLine(node.id.ToString());
+                    node = node.nextNode;
                 }
             }
             return sb.ToString();
         }
 
-        private int CheckIfNodeInCycle(int id, List<CycleInfo> cycleInfos)
+        private string WriteNodeCycle(NodeTree node, List<CycleInfo> cycleInfos)
+        {
+            StringBuilder sb = new StringBuilder();
+            int infoIndex = CheckIfNodeStartsCycle(node.id, cycleInfos);
+            CycleInfo info = cycleInfos[infoIndex];
+
+            if (info.visited == false)
+            {
+                info.visited = true;
+                cycleInfos[infoIndex] = info;
+                sb.AppendLine(info.cycleType.ToString());
+                sb.AppendLine(InsertTypes.OpenBorder.ToString());
+
+
+
+                sb.AppendLine(InsertTypes.CloseBorder.ToString());
+            }
+
+            return sb.ToString();
+        }
+
+        private string WriteNodeCondition(NodeTree node, List<CycleInfo> cycleInfos)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            if (node.nextNode != null && node.falseNode != null)
+            {
+                sb.AppendLine(InsertTypes.If.ToString());
+                sb.AppendLine(node.id.ToString());
+                sb.AppendLine(InsertTypes.OpenBorder.ToString());
+                sb.AppendLine(WriteNodeTree(node.nextNode, cycleInfos));
+                sb.AppendLine(InsertTypes.CloseBorder.ToString());
+
+                sb.AppendLine(InsertTypes.Else.ToString());
+                sb.AppendLine(InsertTypes.OpenBorder.ToString());
+                sb.AppendLine(WriteNodeTree(node.falseNode, cycleInfos));
+                sb.AppendLine(InsertTypes.CloseBorder.ToString());
+            }
+            else if (node.nextNode != null)
+            {
+                sb.AppendLine(InsertTypes.If.ToString());
+                sb.AppendLine(node.id.ToString());
+                sb.AppendLine(InsertTypes.OpenBorder.ToString());
+                sb.AppendLine(WriteNodeTree(node.nextNode, cycleInfos));
+                sb.AppendLine(InsertTypes.CloseBorder.ToString());
+            }
+            else if (node.falseNode != null)
+            {
+                sb.AppendLine(InsertTypes.IfNot.ToString());
+                sb.AppendLine(node.id.ToString());
+                sb.AppendLine(InsertTypes.OpenBorder.ToString());
+                sb.AppendLine(WriteNodeTree(node.falseNode, cycleInfos));
+                sb.AppendLine(InsertTypes.CloseBorder.ToString());
+            }
+
+            return sb.ToString();
+        }
+
+        private int CheckIfNodeStartsCycle(int id, List<CycleInfo> cycleInfos)
         {
             foreach (CycleInfo cycleInfo in cycleInfos)
                 if (cycleInfo.startId == id)
@@ -247,7 +302,7 @@ namespace LabScratch.codeGen
                         else
                             cycleType = InsertTypes.WhileTrue;
 
-                        infos.Add(new CycleInfo { startId = startId, endId = endId, cycleType = cycleType });
+                        infos.Add(new CycleInfo { startId = startId, endId = endId, cycleType = cycleType, visited = false });
                     }
                 }
             }
@@ -359,6 +414,7 @@ namespace LabScratch.codeGen
         public int startId;
         public int endId;
         public InsertTypes cycleType;
+        public bool visited;
     }
 
     class NodeTree
