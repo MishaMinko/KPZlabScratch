@@ -18,7 +18,17 @@ namespace LabScratch.codeGen
 
             sb.AppendLine(WriteNodeTree(tree.startNode, cycleInfos));
 
-            return sb.ToString();
+            string rawOutput = sb.ToString();
+            string cleanedOutput = string.Join(
+                Environment.NewLine,
+                rawOutput.Split(new[] { Environment.NewLine }, StringSplitOptions.None)
+                         .Where(line => !string.IsNullOrWhiteSpace(line))
+            );
+
+            string path = @"C:\Users\Minko\Desktop\output.txt";
+            File.WriteAllText(path, cleanedOutput);
+
+            return cleanedOutput;
         }
 
         private string WriteNodeTree(NodeTree node, List<CycleInfo> cycleInfos)
@@ -56,11 +66,44 @@ namespace LabScratch.codeGen
                 info.visited = true;
                 cycleInfos[infoIndex] = info;
                 sb.AppendLine(info.cycleType.ToString());
-                sb.AppendLine(InsertTypes.OpenBorder.ToString());
 
+                if (info.cycleType == InsertTypes.WhileTrue)
+                {
+                    sb.AppendLine(InsertTypes.OpenBorder.ToString());
+                    sb.AppendLine(node.id.ToString());
+                    sb.AppendLine(WriteNodeTree(node.nextNode, cycleInfos));
+                    sb.AppendLine(InsertTypes.CloseBorder.ToString());
+                }
+                else if (info.cycleType == InsertTypes.WhileIfTrue)
+                {
+                    sb.AppendLine(node.id.ToString());
+                    sb.AppendLine(InsertTypes.OpenBorder.ToString());
+                    sb.AppendLine(WriteNodeTree(node.nextNode, cycleInfos));
+                    sb.AppendLine(InsertTypes.CloseBorder.ToString());
 
+                    if(node.falseNode != null)
+                    {
+                        sb.AppendLine(InsertTypes.Else.ToString());
+                        sb.AppendLine(InsertTypes.OpenBorder.ToString());
+                        sb.AppendLine(WriteNodeTree(node.falseNode, cycleInfos));
+                        sb.AppendLine(InsertTypes.CloseBorder.ToString());
+                    }
+                }
+                else
+                {
+                    sb.AppendLine(node.id.ToString());
+                    sb.AppendLine(InsertTypes.OpenBorder.ToString());
+                    sb.AppendLine(WriteNodeTree(node.falseNode, cycleInfos));
+                    sb.AppendLine(InsertTypes.CloseBorder.ToString());
 
-                sb.AppendLine(InsertTypes.CloseBorder.ToString());
+                    if (node.nextNode != null)
+                    {
+                        sb.AppendLine(InsertTypes.Else.ToString());
+                        sb.AppendLine(InsertTypes.OpenBorder.ToString());
+                        sb.AppendLine(WriteNodeTree(node.nextNode, cycleInfos));
+                        sb.AppendLine(InsertTypes.CloseBorder.ToString());
+                    }
+                }
             }
 
             return sb.ToString();
