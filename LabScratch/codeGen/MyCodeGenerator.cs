@@ -26,7 +26,7 @@ namespace LabScratch.codeGen
 
             sb.AppendLine("}\r\n");
 
-            //ExportCode(sb.ToString());
+            ExportCode(sb.ToString());
 
             return true;
         }
@@ -38,47 +38,55 @@ namespace LabScratch.codeGen
             sb.AppendLine("{");
 
             CodePlanner codePlanner = new CodePlanner(graph);
-            codePlanner.GeneratePlan();
+            string plannedCode = codePlanner.GeneratePlan();
+            string[] strings = plannedCode.Split("\r\n");
 
-            //CodeAnalyser analyser = new CodeAnalyser(graph);
-            //List<string> plan = analyser.GetExecutionPlan();
-
-            //foreach (string planNode in plan)
-            //    sb.AppendLine(planNode);
-
-            //foreach (int nodeId in plan)
-            //{
-            //    Node currentNode = graph.Nodes[nodeId];
-            //    if (currentNode.Type == NodeType.Assignment)
-            //        sb.AppendLine(currentNode.Operation + ";");
-            //    else if (currentNode.Type == NodeType.Console)
-            //    {
-            //        List<string> variables = graph.GetVariablesNames(currentNode);
-            //        if (currentNode.Operation.StartsWith("INPUT"))
-            //            sb.AppendLine(NodeTypeConsoleOne(variables[0]));
-            //        else
-            //            sb.AppendLine(NodeTypeConsoleTwo(variables[0]));
-            //    }
-            //    else
-            //    {
-            //        int c = graph.GetLiteral(currentNode);
-            //        //TODO:
-            //        //V==C
-            //        //V<C
-            //    }
-            //}
+            for (int i = 0; i < strings.Length; i++)
+            {
+                string str = strings[i];
+                if (!Char.IsDigit(str[0]))
+                {
+                    Enum.TryParse(str, out InsertTypes ins);
+                    switch (ins)
+                    {
+                        case InsertTypes.Undefined: sb.AppendLine("//UNDEFINED ERROR"); break;
+                        case InsertTypes.OpenBorder: sb.AppendLine("{"); break;
+                        case InsertTypes.CloseBorder: sb.AppendLine("}"); break;
+                        case InsertTypes.WhileTrue: sb.AppendLine("while (true)"); break;
+                        case InsertTypes.Else: sb.AppendLine("else"); break;
+                        case InsertTypes.WhileIfTrue:
+                        case InsertTypes.WhileIfFalse:
+                        case InsertTypes.If:
+                        case InsertTypes.IfNot:
+                            {
+                                string prefix = ins == InsertTypes.If || ins == InsertTypes.WhileIfTrue ? "" : "!";
+                                string keyword = ins == InsertTypes.If || ins == InsertTypes.IfNot ? "if" : "while";
+                                str = strings[++i];
+                                string condition = graph.Nodes[Convert.ToInt32(str)].Operation;
+                                sb.AppendLine($"{keyword} ({prefix}{condition})");
+                            }
+                            break;
+                    }
+                }
+                else
+                {
+                    Node node = graph.Nodes[Convert.ToInt32(str)];
+                    if (node.Type == NodeType.Assignment)
+                        sb.AppendLine(node.Operation + ";");
+                    else if (node.Type == NodeType.Console)
+                    {
+                        List<string> variables = graph.GetVariablesNames(node);
+                        if (node.Operation.StartsWith("INPUT"))
+                            sb.AppendLine(NodeTypeConsoleOne(variables[0]));
+                        else
+                            sb.AppendLine(NodeTypeConsoleTwo(variables[0]));
+                    }
+                }
+            }
 
             sb.AppendLine("}");
 
             return sb.ToString();
-        }
-
-        private string GenerateVariables(Dictionary<string, int> variables)
-        {
-            string res = "static int ";
-            foreach (KeyValuePair<string, int> v in variables)
-                res += v.Key + "=" + v.Value + ",";
-            return res.Remove(res.Length - 1) + ";";
         }
 
         private string NodeTypeConsoleOne(string v) //INPUT V
@@ -98,14 +106,13 @@ namespace LabScratch.codeGen
             return $"Console.WriteLine(\"{v} = \" + {v});";
         }
 
-        //TODO:
-        //V==C
-        //V<C
-        //Finish creating methods for threads
-        //Creating starting threads
-
-
-
+        private string GenerateVariables(Dictionary<string, int> variables)
+        {
+            string res = "static int ";
+            foreach (KeyValuePair<string, int> v in variables)
+                res += v.Key + "=" + v.Value + ",";
+            return res.Remove(res.Length - 1) + ";";
+        }
 
         private void ExportCode(string str)
         {
@@ -131,14 +138,13 @@ namespace LabScratch.codeGen
     public enum InsertTypes
     {
         WhileTrue = 100,
+        Else,
+        OpenBorder,         //{
+        CloseBorder,        //}
         WhileIfTrue,
         WhileIfFalse,
         If,
         IfNot,
-        Else,
-        UseLocker,
-        OpenBorder,         //{
-        CloseBorder,        //}
         Undefined = 1000
     }
 }

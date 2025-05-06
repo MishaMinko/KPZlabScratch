@@ -25,9 +25,6 @@ namespace LabScratch.codeGen
                          .Where(line => !string.IsNullOrWhiteSpace(line))
             );
 
-            string path = @"C:\Users\Minko\Desktop\output.txt";
-            File.WriteAllText(path, cleanedOutput);
-
             return cleanedOutput;
         }
 
