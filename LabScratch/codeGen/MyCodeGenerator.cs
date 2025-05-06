@@ -21,6 +21,8 @@ namespace LabScratch.codeGen
             if (nonEmptyGraphs.Count < 1)
                 return false;
 
+            sb.AppendLine(GenerateMainFunc(nonEmptyGraphs.Count));
+
             for (int i = 0; i < nonEmptyGraphs.Count; i++)
                 sb.AppendLine(GenerateThreadFunc(nonEmptyGraphs[i], i));
 
@@ -29,6 +31,30 @@ namespace LabScratch.codeGen
             ExportCode(sb.ToString());
 
             return true;
+        }
+
+        private string GenerateMainFunc(int threadCount)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine("static void Main()");
+            sb.AppendLine("{");
+
+            for (int i = 0; i < threadCount; i++)
+                sb.AppendLine("Thread t" + i + " = new Thread(ThreadFunc" + i + ");");
+
+            sb.AppendLine();
+
+            for (int i = 0; i < threadCount; i++)
+                sb.AppendLine("t" + i + ".Start();");
+
+            sb.AppendLine();
+
+            for (int i = 0; i < threadCount; i++)
+                sb.AppendLine("t" + i + ".Join();");
+
+            sb.AppendLine("}");
+            return sb.ToString();
         }
 
         private string GenerateThreadFunc(Graph graph, int index)
@@ -59,11 +85,12 @@ namespace LabScratch.codeGen
                         case InsertTypes.If:
                         case InsertTypes.IfNot:
                             {
-                                string prefix = ins == InsertTypes.If || ins == InsertTypes.WhileIfTrue ? "" : "!";
+                                string prefix = ins == InsertTypes.If || ins == InsertTypes.WhileIfTrue ? "" : "!(";
                                 string keyword = ins == InsertTypes.If || ins == InsertTypes.IfNot ? "if" : "while";
                                 str = strings[++i];
                                 string condition = graph.Nodes[Convert.ToInt32(str)].Operation;
-                                sb.AppendLine($"{keyword} ({prefix}{condition})");
+                                string endix = prefix == "" ? "" : ")";
+                                sb.AppendLine($"{keyword} ({prefix}{condition}{endix})");
                             }
                             break;
                     }
@@ -94,9 +121,9 @@ namespace LabScratch.codeGen
             string exceptionVariable = "e";
             if (v.Equals(exceptionVariable))
                 exceptionVariable = "ex";
-            string str1 = "try\r\n{\r\n";
+            string str1 = "try\r\n{\r\nlock (locker)\r\n{\r\n";
             string str2 = $"Console.Write(\"Enter {v}: \");\r\n{v} = Convert.ToInt32(Console.ReadLine());\r\nConsole.WriteLine();\r\n";
-            string str3 = "}\r\ncatch(FormatException " + exceptionVariable + 
+            string str3 = "}\r\n}\r\ncatch(FormatException " + exceptionVariable + 
                 ")\r\n{\r\nConsole.WriteLine(\"Wrong format of number: \" + " + exceptionVariable + ".Message);\r\n}";
             return str1 + str2 + str3;
         }
