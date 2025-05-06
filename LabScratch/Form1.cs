@@ -344,10 +344,10 @@ namespace LabScratch
                 {
                     MyCodeGenerator mcg = new MyCodeGenerator();
                     bool res = mcg.GenerateCode(graphs, variables);
-                    if (res)
-                        MessageBox.Show("Program code exported successfully.");
-                    else
-                        MessageBox.Show("Something went wrong exporting program code.");
+                    //if (res)
+                    //    MessageBox.Show("Program code exported successfully.");
+                    //else
+                    //    MessageBox.Show("Something went wrong exporting program code.");
                 }
             }
         }

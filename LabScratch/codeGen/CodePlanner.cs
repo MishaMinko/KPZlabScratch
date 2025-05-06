@@ -79,12 +79,7 @@ namespace LabScratch.codeGen
                     sb.AppendLine(InsertTypes.CloseBorder.ToString());
 
                     if(node.falseNode != null)
-                    {
-                        sb.AppendLine(InsertTypes.Else.ToString());
-                        sb.AppendLine(InsertTypes.OpenBorder.ToString());
                         sb.AppendLine(WriteNodeTree(node.falseNode, cycleInfos));
-                        sb.AppendLine(InsertTypes.CloseBorder.ToString());
-                    }
                 }
                 else
                 {
@@ -94,12 +89,7 @@ namespace LabScratch.codeGen
                     sb.AppendLine(InsertTypes.CloseBorder.ToString());
 
                     if (node.nextNode != null)
-                    {
-                        sb.AppendLine(InsertTypes.Else.ToString());
-                        sb.AppendLine(InsertTypes.OpenBorder.ToString());
                         sb.AppendLine(WriteNodeTree(node.nextNode, cycleInfos));
-                        sb.AppendLine(InsertTypes.CloseBorder.ToString());
-                    }
                 }
             }
 

@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Diagnostics;
+using System.Text;
 
 namespace LabScratch.codeGen
 {
@@ -8,6 +9,8 @@ namespace LabScratch.codeGen
         {
             StringBuilder sb = new StringBuilder();
 
+            sb.AppendLine("using System;");
+            sb.AppendLine("using System.Threading;");
             sb.AppendLine("class MyProgram");
             sb.AppendLine("{");
             sb.AppendLine(GenerateVariables(variables));
@@ -15,7 +18,7 @@ namespace LabScratch.codeGen
 
             List<Graph> nonEmptyGraphs = new List<Graph>();
             foreach (Graph graph in graphs)
-                if(graph.Nodes.Count > 0)
+                if (graph.Nodes.Count > 0)
                     nonEmptyGraphs.Add(graph);
 
             if (nonEmptyGraphs.Count < 1)
@@ -28,7 +31,7 @@ namespace LabScratch.codeGen
 
             sb.AppendLine("}\r\n");
 
-            ExportCode(sb.ToString());
+            GenerateExeFile(ExportCode(sb.ToString()));
 
             return true;
         }
@@ -123,7 +126,7 @@ namespace LabScratch.codeGen
                 exceptionVariable = "ex";
             string str1 = "try\r\n{\r\nlock (locker)\r\n{\r\n";
             string str2 = $"Console.Write(\"Enter {v}: \");\r\n{v} = Convert.ToInt32(Console.ReadLine());\r\nConsole.WriteLine();\r\n";
-            string str3 = "}\r\n}\r\ncatch(FormatException " + exceptionVariable + 
+            string str3 = "}\r\n}\r\ncatch(FormatException " + exceptionVariable +
                 ")\r\n{\r\nConsole.WriteLine(\"Wrong format of number: \" + " + exceptionVariable + ".Message);\r\n}";
             return str1 + str2 + str3;
         }
@@ -141,7 +144,7 @@ namespace LabScratch.codeGen
             return res.Remove(res.Length - 1) + ";";
         }
 
-        private void ExportCode(string str)
+        private string ExportCode(string str)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "C# Source Files (*.cs)|*.cs";
@@ -153,11 +156,70 @@ namespace LabScratch.codeGen
                 try
                 {
                     File.WriteAllText(saveFileDialog.FileName, str);
+                    return saveFileDialog.FileName;
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show("Error exporting program code:\n" + ex.Message);
+                    return "";
                 }
+            }
+            return "";
+        }
+
+        private void GenerateExeFile(string sourcePath)
+        {
+            if (!File.Exists(sourcePath))
+            {
+                MessageBox.Show("Source file not found!");
+                return;
+            }
+
+            string fileName = Path.GetFileName(sourcePath);
+            string tempDir = Path.Combine(Path.GetTempPath(), "DotnetBuild_" + Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(tempDir);
+
+            string csprojPath = Path.Combine(tempDir, "TempProject.csproj");
+            string newSourcePath = Path.Combine(tempDir, fileName);
+            File.Copy(sourcePath, newSourcePath);
+
+            File.WriteAllText(csprojPath,
+            $"""
+            <Project Sdk="Microsoft.NET.Sdk">
+              <PropertyGroup>
+                <OutputType>Exe</OutputType>
+                <TargetFramework>net8.0</TargetFramework>
+              </PropertyGroup>
+            </Project>
+            """);
+
+            ProcessStartInfo psi = new ProcessStartInfo
+            {
+                FileName = "dotnet",
+                Arguments = $"build \"{csprojPath}\" -c Release -o \"{tempDir}\\build\"",
+                WorkingDirectory = tempDir,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            Process process = Process.Start(psi);
+            string output = process.StandardOutput.ReadToEnd();
+            string error = process.StandardError.ReadToEnd();
+            process.WaitForExit();
+
+            string exePath = Path.Combine(tempDir, "build", Path.GetFileNameWithoutExtension(fileName) + ".exe");
+
+            if (File.Exists(exePath))
+            {
+                string targetPath = Path.Combine(Path.GetDirectoryName(sourcePath), Path.GetFileName(exePath));
+                File.Copy(exePath, targetPath, true);
+                MessageBox.Show("Compilation succeeded!\nExecutable copied to:\n" + targetPath);
+            }
+            else
+            {
+                MessageBox.Show("Compilation failed:\n" + output + "\n" + error);
             }
         }
     }
