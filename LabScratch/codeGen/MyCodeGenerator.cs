@@ -116,7 +116,7 @@ namespace LabScratch.codeGen
 
             sb.AppendLine("}");
 
-            return sb.ToString();
+            return AddLockers(sb.ToString());
         }
 
         private string NodeTypeConsoleOne(string v) //INPUT V
@@ -142,6 +142,101 @@ namespace LabScratch.codeGen
             foreach (KeyValuePair<string, int> v in variables)
                 res += v.Key + "=" + v.Value + ",";
             return res.Remove(res.Length - 1) + ";";
+        }
+
+        private string AddLockers(string code)
+        {
+            var lines = code.Split("\r\n");
+            var result = new List<string>();
+
+            List<string> buffer = new List<string>();
+            string currentIndent = "";
+            int lockDepth = 0;
+            bool insideTryCatch = false;
+
+            bool ShouldWrapLine(string trimmed)
+            {
+                if (trimmed.Contains("ReadLine()")) return false;
+                if (trimmed.StartsWith("if")) return false;
+                if (trimmed.StartsWith("while")) return false;
+                if (trimmed.StartsWith("else")) return false;
+                if (trimmed.StartsWith("try")) return false;
+                if (trimmed.StartsWith("catch")) return false;
+                if (trimmed.StartsWith("finally")) return false;
+                if (trimmed == "{") return false;
+                if (trimmed == "}") return false;
+                if (trimmed.Contains("==") || trimmed.Contains("!=")) return false;
+                if (trimmed.StartsWith("int ") || trimmed.StartsWith("var ") || trimmed.StartsWith("bool ") || trimmed.StartsWith("string ")) return false;
+                if (trimmed.StartsWith("lock (locker)")) return false;
+
+                return trimmed.Contains("=") || trimmed.StartsWith("Console.WriteLine");
+            }
+
+            void FlushBuffer()
+            {
+                if (buffer.Count == 0) return;
+
+                result.Add(currentIndent + "lock (locker)");
+                result.Add(currentIndent + "{");
+                result.AddRange(buffer);
+                result.Add(currentIndent + "}");
+                buffer.Clear();
+            }
+
+            foreach (var line in lines)
+            {
+                string trimmed = line.Trim();
+
+                if (trimmed.StartsWith("lock (locker)"))
+                {
+                    lockDepth++;
+                    FlushBuffer();
+                    result.Add(line);
+                    continue;
+                }
+
+                if (trimmed == "}")
+                {
+                    if (lockDepth > 0)
+                        lockDepth--;
+                    if (insideTryCatch)
+                        insideTryCatch = false;
+                    FlushBuffer();
+                    result.Add(line);
+                    continue;
+                }
+
+                if (trimmed.StartsWith("try") || trimmed.StartsWith("catch") || trimmed.StartsWith("finally"))
+                {
+                    insideTryCatch = true;
+                    FlushBuffer();
+                    result.Add(line);
+                    continue;
+                }
+
+                if (lockDepth > 0 || insideTryCatch)
+                {
+                    FlushBuffer();
+                    result.Add(line);
+                    continue;
+                }
+
+                if (ShouldWrapLine(trimmed))
+                {
+                    if (buffer.Count == 0)
+                        currentIndent = line.Substring(0, line.IndexOf(trimmed));
+                    buffer.Add(line);
+                }
+                else
+                {
+                    FlushBuffer();
+                    result.Add(line);
+                }
+            }
+
+            FlushBuffer();
+
+            return string.Join("\r\n", result);
         }
 
         private string ExportCode(string str)
@@ -221,9 +316,7 @@ namespace LabScratch.codeGen
                 RunExeInConsole(exePath);
             }
             else
-            {
                 MessageBox.Show("Compilation failed:\n" + output + "\n" + error);
-            }
         }
 
         private void RunExeInConsole(string exePath)
