@@ -1,6 +1,4 @@
-﻿using System.Windows.Forms;
-
-namespace LabScratch
+﻿namespace LabScratch
 {
     public partial class CreateVariableForm : Form
     {

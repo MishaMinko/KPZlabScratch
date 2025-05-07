@@ -122,13 +122,13 @@
             listBox1.ItemHeight = 25;
             listBox1.Location = new Point(3, 43);
             listBox1.Name = "listBox1";
-            listBox1.Size = new Size(328, 29);
+            listBox1.Size = new Size(328, 154);
             listBox1.TabIndex = 2;
             listBox1.MouseClick += listBox1_MouseClick;
             // 
             // button2
             // 
-            button2.Location = new Point(3, 78);
+            button2.Location = new Point(3, 203);
             button2.Name = "button2";
             button2.Size = new Size(328, 41);
             button2.TabIndex = 3;
@@ -149,7 +149,7 @@
             panel1.Controls.Add(label2);
             panel1.Controls.Add(textBox1);
             panel1.Controls.Add(label1);
-            panel1.Location = new Point(3, 125);
+            panel1.Location = new Point(3, 250);
             panel1.Name = "panel1";
             panel1.Size = new Size(328, 236);
             panel1.TabIndex = 4;
@@ -252,14 +252,14 @@
             // panel2
             // 
             panel2.Controls.Add(button4);
-            panel2.Location = new Point(3, 367);
+            panel2.Location = new Point(3, 492);
             panel2.Name = "panel2";
-            panel2.Size = new Size(328, 266);
+            panel2.Size = new Size(328, 139);
             panel2.TabIndex = 5;
             // 
             // button4
             // 
-            button4.Location = new Point(3, 110);
+            button4.Location = new Point(3, 48);
             button4.Name = "button4";
             button4.Size = new Size(322, 45);
             button4.TabIndex = 10;
@@ -271,7 +271,7 @@
             // 
             panel3.Controls.Add(button6);
             panel3.Controls.Add(button5);
-            panel3.Location = new Point(3, 639);
+            panel3.Location = new Point(3, 637);
             panel3.Name = "panel3";
             panel3.Size = new Size(328, 104);
             panel3.TabIndex = 6;

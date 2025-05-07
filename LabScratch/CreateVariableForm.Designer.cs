@@ -45,13 +45,13 @@
             listBox1.ItemHeight = 28;
             listBox1.Location = new Point(12, 12);
             listBox1.Name = "listBox1";
-            listBox1.Size = new Size(323, 32);
+            listBox1.Size = new Size(323, 200);
             listBox1.TabIndex = 0;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(12, 47);
+            label1.Location = new Point(12, 215);
             label1.Name = "label1";
             label1.Size = new Size(184, 28);
             label1.TabIndex = 1;
@@ -59,7 +59,7 @@
             // 
             // textBox1
             // 
-            textBox1.Location = new Point(12, 78);
+            textBox1.Location = new Point(12, 246);
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(323, 34);
             textBox1.TabIndex = 2;
@@ -68,7 +68,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(12, 115);
+            label2.Location = new Point(12, 283);
             label2.Name = "label2";
             label2.Size = new Size(210, 28);
             label2.TabIndex = 3;
@@ -76,16 +76,16 @@
             // 
             // numericUpDown1
             // 
-            numericUpDown1.Location = new Point(12, 146);
+            numericUpDown1.Location = new Point(12, 314);
             numericUpDown1.Name = "numericUpDown1";
             numericUpDown1.Size = new Size(323, 34);
             numericUpDown1.TabIndex = 4;
             // 
             // button1
             // 
-            button1.Location = new Point(12, 186);
+            button1.Location = new Point(12, 354);
             button1.Name = "button1";
-            button1.Size = new Size(323, 48);
+            button1.Size = new Size(323, 46);
             button1.TabIndex = 5;
             button1.Text = "Create variable";
             button1.UseVisualStyleBackColor = true;
@@ -96,14 +96,14 @@
             contextMenuStrip1.ImageScalingSize = new Size(20, 20);
             contextMenuStrip1.Name = "contextMenuStrip1";
             contextMenuStrip1.ShowImageMargin = false;
-            contextMenuStrip1.Size = new Size(186, 32);
+            contextMenuStrip1.Size = new Size(36, 4);
             contextMenuStrip1.Click += contextMenuStrip1_Click;
             // 
             // CreateVariableForm
             // 
             AutoScaleDimensions = new SizeF(11F, 28F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(347, 246);
+            ClientSize = new Size(347, 412);
             Controls.Add(button1);
             Controls.Add(numericUpDown1);
             Controls.Add(label2);
