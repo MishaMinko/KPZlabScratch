@@ -176,6 +176,7 @@ namespace LabScratch.codeGen
             }
 
             string fileName = Path.GetFileName(sourcePath);
+            string fileNameWithoutExt = Path.GetFileNameWithoutExtension(sourcePath);
             string tempDir = Path.Combine(Path.GetTempPath(), "DotnetBuild_" + Guid.NewGuid().ToString("N"));
             Directory.CreateDirectory(tempDir);
 
@@ -189,6 +190,7 @@ namespace LabScratch.codeGen
               <PropertyGroup>
                 <OutputType>Exe</OutputType>
                 <TargetFramework>net8.0</TargetFramework>
+                <AssemblyName>MyProgram</AssemblyName>
               </PropertyGroup>
             </Project>
             """);
@@ -209,18 +211,30 @@ namespace LabScratch.codeGen
             string error = process.StandardError.ReadToEnd();
             process.WaitForExit();
 
-            string exePath = Path.Combine(tempDir, "build", Path.GetFileNameWithoutExtension(fileName) + ".exe");
+            string exePath = Path.Combine(tempDir, "build", fileNameWithoutExt + ".exe");
 
             if (File.Exists(exePath))
             {
                 string targetPath = Path.Combine(Path.GetDirectoryName(sourcePath), Path.GetFileName(exePath));
                 File.Copy(exePath, targetPath, true);
                 MessageBox.Show("Compilation succeeded!\nExecutable copied to:\n" + targetPath);
+                RunExeInConsole(exePath);
             }
             else
             {
                 MessageBox.Show("Compilation failed:\n" + output + "\n" + error);
             }
+        }
+
+        private void RunExeInConsole(string exePath)
+        {
+            ProcessStartInfo psi = new ProcessStartInfo
+            {
+                FileName = "cmd.exe",
+                Arguments = $"/k \"\"{exePath}\"\"",
+                UseShellExecute = true
+            };
+            Process.Start(psi);
         }
     }
 
