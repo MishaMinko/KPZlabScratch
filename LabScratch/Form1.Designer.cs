@@ -48,6 +48,7 @@
             textBox1 = new TextBox();
             label1 = new Label();
             panel2 = new Panel();
+            button7 = new Button();
             button4 = new Button();
             panel3 = new Panel();
             button6 = new Button();
@@ -122,13 +123,13 @@
             listBox1.ItemHeight = 25;
             listBox1.Location = new Point(3, 43);
             listBox1.Name = "listBox1";
-            listBox1.Size = new Size(328, 154);
+            listBox1.Size = new Size(328, 179);
             listBox1.TabIndex = 2;
             listBox1.MouseClick += listBox1_MouseClick;
             // 
             // button2
             // 
-            button2.Location = new Point(3, 203);
+            button2.Location = new Point(3, 228);
             button2.Name = "button2";
             button2.Size = new Size(328, 41);
             button2.TabIndex = 3;
@@ -149,7 +150,7 @@
             panel1.Controls.Add(label2);
             panel1.Controls.Add(textBox1);
             panel1.Controls.Add(label1);
-            panel1.Location = new Point(3, 250);
+            panel1.Location = new Point(3, 275);
             panel1.Name = "panel1";
             panel1.Size = new Size(328, 236);
             panel1.TabIndex = 4;
@@ -251,19 +252,30 @@
             // 
             // panel2
             // 
+            panel2.Controls.Add(button7);
             panel2.Controls.Add(button4);
-            panel2.Location = new Point(3, 492);
+            panel2.Location = new Point(3, 517);
             panel2.Name = "panel2";
-            panel2.Size = new Size(328, 139);
+            panel2.Size = new Size(328, 111);
             panel2.TabIndex = 5;
+            // 
+            // button7
+            // 
+            button7.Location = new Point(3, 66);
+            button7.Name = "button7";
+            button7.Size = new Size(322, 45);
+            button7.TabIndex = 11;
+            button7.Text = "Generate .exe file";
+            button7.UseVisualStyleBackColor = true;
+            button7.Click += button7_Click;
             // 
             // button4
             // 
-            button4.Location = new Point(3, 48);
+            button4.Location = new Point(3, 3);
             button4.Name = "button4";
             button4.Size = new Size(322, 45);
             button4.TabIndex = 10;
-            button4.Text = "Generate C# code";
+            button4.Text = "Generate C# code and .exe file";
             button4.UseVisualStyleBackColor = true;
             button4.Click += button4_Click;
             // 
@@ -271,14 +283,14 @@
             // 
             panel3.Controls.Add(button6);
             panel3.Controls.Add(button5);
-            panel3.Location = new Point(3, 637);
+            panel3.Location = new Point(3, 634);
             panel3.Name = "panel3";
             panel3.Size = new Size(328, 104);
             panel3.TabIndex = 6;
             // 
             // button6
             // 
-            button6.Location = new Point(3, 54);
+            button6.Location = new Point(3, 56);
             button6.Name = "button6";
             button6.Size = new Size(322, 45);
             button6.TabIndex = 12;
@@ -377,5 +389,6 @@
         private Button button5;
         private Panel panel4;
         private PictureBox pictureBox1;
+        private Button button7;
     }
 }

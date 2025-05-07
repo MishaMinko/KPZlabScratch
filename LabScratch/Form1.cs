@@ -328,19 +328,19 @@ namespace LabScratch
 
         private void button4_Click(object sender, EventArgs e)
         {
-            if(variables.Count > 1)
+            if (variables.Count > 1)
             {
                 bool isAnyGraphStarted = false;
-                foreach(Graph graph in graphs)
+                foreach (Graph graph in graphs)
                 {
-                    if(graph.Nodes.Count > 0)
+                    if (graph.Nodes.Count > 0)
                     {
                         isAnyGraphStarted = true;
                         break;
                     }
                 }
 
-                if(isAnyGraphStarted)
+                if (isAnyGraphStarted)
                 {
                     MyCodeGenerator mcg = new MyCodeGenerator();
                     bool res = mcg.GenerateCode(graphs, variables);
@@ -360,7 +360,7 @@ namespace LabScratch
                 {
                     (graphs, variables) = GraphIO.ImportGraphs(openFileDialog.FileName);
                     listBox1.Items.Clear();
-                    foreach(KeyValuePair<string, int> key in variables)
+                    foreach (KeyValuePair<string, int> key in variables)
                         listBox1.Items.Add(key.Key + "=" + key.Value);
                     numericUpDown1.Value = 0;
                     pictureBox1.Invalidate();
@@ -389,6 +389,26 @@ namespace LabScratch
                 catch (Exception ex)
                 {
                     MessageBox.Show("Error exporting graphs:\n" + ex.Message);
+                }
+            }
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "C# source files (*.cs)|*.cs";
+            openFileDialog.Title = "Choose C# source file";
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    MyCodeGenerator mcg = new MyCodeGenerator();
+                    mcg.GenerateExeFile(openFileDialog.FileName);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error generating exe file:\n" + ex.Message);
                 }
             }
         }

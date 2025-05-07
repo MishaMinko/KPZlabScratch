@@ -262,7 +262,7 @@ namespace LabScratch.codeGen
             return "";
         }
 
-        private void GenerateExeFile(string sourcePath)
+        public void GenerateExeFile(string sourcePath)
         {
             if (!File.Exists(sourcePath))
             {
