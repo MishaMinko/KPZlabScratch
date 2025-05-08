@@ -1,0 +1,847 @@
+{
+  "graphs": [
+    {
+      "Nodes": {
+        "0": {
+          "Id": 0,
+          "Type": 0,
+          "Operation": "a=5",
+          "Position": {
+            "IsEmpty": false,
+            "X": 354,
+            "Y": 273
+          },
+          "NextId": 1,
+          "FalseId": -1,
+          "Rad": 14
+        },
+        "1": {
+          "Id": 1,
+          "Type": 0,
+          "Operation": "b=a",
+          "Position": {
+            "IsEmpty": false,
+            "X": 290,
+            "Y": 341
+          },
+          "NextId": 2,
+          "FalseId": -1,
+          "Rad": 14
+        },
+        "2": {
+          "Id": 2,
+          "Type": 0,
+          "Operation": "c=b",
+          "Position": {
+            "IsEmpty": false,
+            "X": 319,
+            "Y": 430
+          },
+          "NextId": 3,
+          "FalseId": -1,
+          "Rad": 14
+        },
+        "3": {
+          "Id": 3,
+          "Type": 1,
+          "Operation": "PRINT c",
+          "Position": {
+            "IsEmpty": false,
+            "X": 372,
+            "Y": 379
+          },
+          "NextId": 0,
+          "FalseId": -1,
+          "Rad": 14
+        }
+      },
+      "Variables": [
+        "-20",
+        "a",
+        "b",
+        "c"
+      ],
+      "SelectedNodeId": 3
+    },
+    {
+      "Nodes": {
+        "4": {
+          "Id": 4,
+          "Type": 1,
+          "Operation": "PRINT b",
+          "Position": {
+            "IsEmpty": false,
+            "X": 228,
+            "Y": 570
+          },
+          "NextId": -1,
+          "FalseId": -1,
+          "Rad": 14
+        },
+        "3": {
+          "Id": 3,
+          "Type": 2,
+          "Operation": "b==0",
+          "Position": {
+            "IsEmpty": false,
+            "X": 294,
+            "Y": 495
+          },
+          "NextId": 4,
+          "FalseId": 5,
+          "Rad": 14
+        },
+        "2": {
+          "Id": 2,
+          "Type": 1,
+          "Operation": "PRINT b",
+          "Position": {
+            "IsEmpty": false,
+            "X": 255,
+            "Y": 428
+          },
+          "NextId": 3,
+          "FalseId": -1,
+          "Rad": 14
+        },
+        "1": {
+          "Id": 1,
+          "Type": 0,
+          "Operation": "b=a",
+          "Position": {
+            "IsEmpty": false,
+            "X": 215,
+            "Y": 349
+          },
+          "NextId": 2,
+          "FalseId": -1,
+          "Rad": 14
+        },
+        "0": {
+          "Id": 0,
+          "Type": 0,
+          "Operation": "a=10",
+          "Position": {
+            "IsEmpty": false,
+            "X": 181,
+            "Y": 270
+          },
+          "NextId": 1,
+          "FalseId": -1,
+          "Rad": 14
+        },
+        "5": {
+          "Id": 5,
+          "Type": 1,
+          "Operation": "INPUT b",
+          "Position": {
+            "IsEmpty": false,
+            "X": 365,
+            "Y": 433
+          },
+          "NextId": 6,
+          "FalseId": -1,
+          "Rad": 14
+        },
+        "6": {
+          "Id": 6,
+          "Type": 0,
+          "Operation": "d=b",
+          "Position": {
+            "IsEmpty": false,
+            "X": 310,
+            "Y": 369
+          },
+          "NextId": 7,
+          "FalseId": -1,
+          "Rad": 14
+        },
+        "7": {
+          "Id": 7,
+          "Type": 1,
+          "Operation": "PRINT d",
+          "Position": {
+            "IsEmpty": false,
+            "X": 262,
+            "Y": 298
+          },
+          "NextId": 0,
+          "FalseId": -1,
+          "Rad": 14
+        }
+      },
+      "Variables": [
+        "v",
+        "a",
+        "b",
+        "d"
+      ],
+      "SelectedNodeId": 7
+    },
+    {
+      "Nodes": {
+        "2": {
+          "Id": 2,
+          "Type": 0,
+          "Operation": "d=c",
+          "Position": {
+            "IsEmpty": false,
+            "X": 239,
+            "Y": 515
+          },
+          "NextId": 3,
+          "FalseId": -1,
+          "Rad": 14
+        },
+        "4": {
+          "Id": 4,
+          "Type": 1,
+          "Operation": "PRINT z",
+          "Position": {
+            "IsEmpty": false,
+            "X": 245,
+            "Y": 679
+          },
+          "NextId": 7,
+          "FalseId": -1,
+          "Rad": 14
+        },
+        "1": {
+          "Id": 1,
+          "Type": 2,
+          "Operation": "c\u003C5",
+          "Position": {
+            "IsEmpty": false,
+            "X": 325,
+            "Y": 428
+          },
+          "NextId": 2,
+          "FalseId": 5,
+          "Rad": 14
+        },
+        "3": {
+          "Id": 3,
+          "Type": 0,
+          "Operation": "z=d",
+          "Position": {
+            "IsEmpty": false,
+            "X": 240,
+            "Y": 595
+          },
+          "NextId": 4,
+          "FalseId": -1,
+          "Rad": 14
+        },
+        "0": {
+          "Id": 0,
+          "Type": 1,
+          "Operation": "INPUT c",
+          "Position": {
+            "IsEmpty": false,
+            "X": 325,
+            "Y": 322
+          },
+          "NextId": 1,
+          "FalseId": -1,
+          "Rad": 14
+        },
+        "5": {
+          "Id": 5,
+          "Type": 0,
+          "Operation": "v=c",
+          "Position": {
+            "IsEmpty": false,
+            "X": 409,
+            "Y": 503
+          },
+          "NextId": 6,
+          "FalseId": -1,
+          "Rad": 14
+        },
+        "6": {
+          "Id": 6,
+          "Type": 1,
+          "Operation": "PRINT v",
+          "Position": {
+            "IsEmpty": false,
+            "X": 409,
+            "Y": 589
+          },
+          "NextId": 7,
+          "FalseId": -1,
+          "Rad": 14
+        },
+        "7": {
+          "Id": 7,
+          "Type": 1,
+          "Operation": "PRINT c",
+          "Position": {
+            "IsEmpty": false,
+            "X": 374,
+            "Y": 712
+          },
+          "NextId": -1,
+          "FalseId": -1,
+          "Rad": 14
+        }
+      },
+      "Variables": [
+        "c",
+        "d",
+        "z",
+        "v"
+      ],
+      "SelectedNodeId": 4
+    },
+    {
+      "Nodes": {
+        "0": {
+          "Id": 0,
+          "Type": 0,
+          "Operation": "d=a",
+          "Position": {
+            "IsEmpty": false,
+            "X": 269,
+            "Y": 245
+          },
+          "NextId": 1,
+          "FalseId": -1,
+          "Rad": 14
+        },
+        "2": {
+          "Id": 2,
+          "Type": 1,
+          "Operation": "PRINT a",
+          "Position": {
+            "IsEmpty": false,
+            "X": 277,
+            "Y": 437
+          },
+          "NextId": 3,
+          "FalseId": -1,
+          "Rad": 14
+        },
+        "3": {
+          "Id": 3,
+          "Type": 0,
+          "Operation": "b=a",
+          "Position": {
+            "IsEmpty": false,
+            "X": 377,
+            "Y": 395
+          },
+          "NextId": 1,
+          "FalseId": -1,
+          "Rad": 14
+        },
+        "1": {
+          "Id": 1,
+          "Type": 1,
+          "Operation": "INPUT a",
+          "Position": {
+            "IsEmpty": false,
+            "X": 271,
+            "Y": 342
+          },
+          "NextId": 2,
+          "FalseId": -1,
+          "Rad": 14
+        }
+      },
+      "Variables": [
+        "d",
+        "a",
+        "b"
+      ],
+      "SelectedNodeId": 1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    },
+    {
+      "Nodes": {},
+      "Variables": [],
+      "SelectedNodeId": -1
+    }
+  ],
+  "variables": {
+    "d": 0,
+    "z": 0,
+    "v": 0,
+    "a": 0,
+    "b": 0,
+    "c": 0
+  }
+}
