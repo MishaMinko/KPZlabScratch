@@ -155,14 +155,11 @@ namespace LabScratch.codeGen
 
         private void GenerateTree()
         {
-            int startId = -1;
+            int startId = 100;
 
-            foreach(Node node in nodes.Values)
-                if(node != null)
-                {
-                    startId = node.Id;
-                    break;
-                }
+            foreach(int key in nodes.Keys)
+                if(key < startId)
+                    startId = key;
 
             if (startId == -1)
                 return;
